@@ -1,0 +1,34 @@
+
+Project name: School Attendance Project(current name)
+
+	Our software will provide teachers and professors with an app that is fast, efficient and accurate for attendance taking.
+	This will simplify the work of proffesors for taking attendance as compared to traditional methods. It will keep track and manage 
+	student login and logout.  Every attendance session will store the information of the students along with their attendance status
+	for the day in a file.  The student's legal guardians can sign up their emails to receive an alert from the system
+	when an absence is recorded.
+	
+	
+Student Description
+The students will be able to scan their Identification Cards in order to sign in/out of our system. The Student will be notified if their
+ login/logout was accepted or not, the scanner light will turn green if they were succefully able to login/logout or they will get an error 
+message on the screen alerting them that their login/logout failed. The student or student gaurdian will also receive notification via 
+email of their absence if they did not log into the system during the class period. This will allow the student/gaurdian to keep track of 
+absences through the academic period.
+
+Administators, such as teachers,professors, or anyone with a administartive account, will be able to modify current and past student 
+attendence data. Initially, the administrator will have to sign up for a system account. This allows the adminstor to record and edit data.
+ The adminsitaotr will then be able to filter and/or search for a student's attendence history. This admininistator will also be to go 
+back to past attendence and edit the data in case someone was in class but didn't log in. Once the admin signs up for an account, he/she 
+will be able to create their classes in the program and include the class name, time slot, and the class roster. When all the class details 
+have been submmited and the admin has selected the class as active, the administator will be able to let students log in/out. While the student's 
+log in/out, the administator will overwatch the log in process to make sure that student's do not swipe in twice (logging in for their friends). 
+
+
+Administrator
+- will have the ability to view attendance records of the day, week, and month.
+- will view tardies and absences of students.
+- setup email list of students parents for notifications.
+Students
+- each student will have a unique ID card for the class.
+- will login and logout from class.
+- upon login/logout students will see their name, login time, and number of absences for the month.
