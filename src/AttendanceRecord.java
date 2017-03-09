@@ -14,10 +14,10 @@ public class AttendanceRecord {
 	DateFormat dateTime;
 	ArrayList<Student> students = new ArrayList<Student>();
 	
-	public AttendanceRecord(DateFormat dateTime, ArrayList<Student> students) {
+	public AttendanceRecord(DateFormat dateTime) {
 		super();
 		this.dateTime = dateTime;
-		this.students = students;
+		
 	}
 	
 	public DateFormat getDateTime() {

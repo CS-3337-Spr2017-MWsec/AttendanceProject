@@ -8,13 +8,13 @@ public class Course {
 	private String time;
 	private ArrayList<AttendanceRecord> attendanceRecords = new ArrayList<AttendanceRecord>();
 	
-	public Course(String courseName, int courseNumber, String days, String time, ArrayList<AttendanceRecord> attendanceRecords) {
+	public Course(String courseName, int courseNumber, String days, String time) {
 		super();
 		this.courseName = courseName;
 		this.courseNumber = courseNumber;
 		this.days = days;
 		this.time = time;
-		this.attendanceRecords = attendanceRecords;
+		
 	}
 
 	public String getCourseName() {
