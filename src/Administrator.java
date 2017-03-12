@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Administrator {
 	
@@ -7,6 +8,7 @@ public class Administrator {
 	private String email;
 	private String username;
 	private String password;
+	private ArrayList<Course> courses = new ArrayList<>();
 	
 	public Administrator(String name, String firstName, String lastName, String email, String username, String password) {
 		
@@ -67,7 +69,10 @@ public class Administrator {
 		this.password = password;
 	}
 	
-	
+	public void setCourse(String name) {	//Uses course name to create a course object, then adds it to the course array for this class
+		
+	}
+
 
 	
 }

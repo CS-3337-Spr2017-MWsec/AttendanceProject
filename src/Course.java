@@ -7,14 +7,23 @@ public class Course {
 	private String days;
 	private String time;
 	private ArrayList<AttendanceRecord> attendanceRecords = new ArrayList<AttendanceRecord>();
+	private ArrayList<Student> students = new ArrayList<Student>();
 	
-	public Course(String courseName, int courseNumber, String days, String time) {
+	public Course(String courseName, int courseNumber, String days, String time, ArrayList<AttendanceRecord> attendanceRecords) {
 		super();
 		this.courseName = courseName;
 		this.courseNumber = courseNumber;
 		this.days = days;
 		this.time = time;
-		
+		this.attendanceRecords = attendanceRecords;
+	}
+
+	public ArrayList<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(ArrayList<Student> students) {
+		this.students = students; 	// Needs to be changed to accept a student in arguments and add into Students arraylist
 	}
 
 	public String getCourseName() {
@@ -54,8 +63,12 @@ public class Course {
 	}
 
 	public void setRecords(ArrayList<AttendanceRecord> attendanceRecords) {
-		this.attendanceRecords = attendanceRecords;
+		this.attendanceRecords = attendanceRecords;	//Arguments should be AttendanceRecord not ArrayList<attendencerecord>
 	} 
+	
+	public ArrayList<Student> filterData(int numOfDays) { // filter and return attendence for # of days
+		return null;
+	}
 	
 	
 	
