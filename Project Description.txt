@@ -28,6 +28,7 @@ Administrator
 - will have the ability to view attendance records of the day, week, and month.
 - will view tardies and absences of students.
 - setup email list of students parents for notifications.
+- edit student information/ class information.
 Students
 - each student will have a unique ID card for the class.
 - will login and logout from class.
