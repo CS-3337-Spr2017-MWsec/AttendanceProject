@@ -9,13 +9,13 @@ public class Student {
 	private boolean loginStatus;
 	private boolean logoutStatus;
 	
-	public Student(String firstName, String lastName, String guardianEmail, int id, boolean status) {
+	public Student(String firstName, String lastName, int id, String guardianEmail) {
 		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.guardianEmail = guardianEmail;
 		this.id = id;
-		this.status = status;
+		
 	}
 
 	public String getFirstName() {

@@ -3,19 +3,19 @@ import java.util.ArrayList;
 public class Course {
 	
 	private String courseName;
-	private int courseNumber;
+	private String courseNumber;
 	private String days;
 	private String time;
 	private ArrayList<AttendanceRecord> attendanceRecords = new ArrayList<AttendanceRecord>();
-	private ArrayList<Student> students = new ArrayList<Student>();
+	protected ArrayList<Student> students = new ArrayList<Student>();
 	
-	public Course(String courseName, int courseNumber, String days, String time, ArrayList<AttendanceRecord> attendanceRecords) {
+	public Course(String courseName, String courseNumber, String days, String times) {
 		super();
 		this.courseName = courseName;
 		this.courseNumber = courseNumber;
 		this.days = days;
 		this.time = time;
-		this.attendanceRecords = attendanceRecords;
+		
 	}
 
 	public ArrayList<Student> getStudents() {
@@ -34,11 +34,11 @@ public class Course {
 		this.courseName = courseName;
 	}
 
-	public int getCourseNumber() {
+	public String getCourseNumber() {
 		return courseNumber;
 	}
 
-	public void setCourseNumber(int courseNumber) {
+	public void setCourseNumber(String courseNumber) {
 		this.courseNumber = courseNumber;
 	}
 
