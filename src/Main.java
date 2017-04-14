@@ -1,8 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
@@ -12,37 +13,31 @@ import javax.swing.JFileChooser;
 public class Main {
 
 	public static void main(String[] args) {
+
+		createCourse();
 	
-		
-		Course currentCourse = null;
-		currentCourse = createRoster();
-		
-		//test to see if the current course roster is updated;
-		for (int i = 0 ; i < currentCourse.students.size(); i ++) {
-			System.out.print(currentCourse.students.get(i).getFirstName() + " ");
-			System.out.print(currentCourse.students.get(i).getLastName() + " ");
-			System.out.print(currentCourse.students.get(i).getId()+ " ");
-			System.out.println("");
-			
-		}
-		
-		
 		
 	}
 	
-	public static Course createRoster() {
+	//This method will be called when the professor wished to create a new Course. 
+	//it prompts the professor to upload a csv file and uses it to create a new file
+	//this new file will have the course info and student roster(course.students).  to be edited each attendance day
+	public static void createCourse() {
 		
-		//Choose the course File
+	        
+		//Choose a correctly formatted CSV file to upload
+		System.out.println("Upload CSV file");
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int result = fileChooser.showOpenDialog(fileChooser);
+	
 		File selectedFile = null;
-		if (result == JFileChooser.APPROVE_OPTION) {
+	
 		    selectedFile = fileChooser.getSelectedFile();
 		    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-		}
 		
-		//Read from File
+		
+		//Read from CSV File
 		ArrayList<String> records = new ArrayList<String>();
 		
 		  try
@@ -63,7 +58,7 @@ public class Main {
 		   
 		  }
 		  
-		//Course information
+		//Prompt user to enter Course information
 			Scanner scanner = new Scanner(System.in);
 			System.out.println("Enter course name: ");
 			String name = scanner.nextLine();
@@ -73,10 +68,12 @@ public class Main {
 			String days = scanner.nextLine();
 			System.out.println("Enter course time: ");
 			String time = scanner.nextLine();
-			
+			scanner.close();
+		
+		//Crate a Course from above information
 			Course currentCourse = new Course(name, number, days, time);
 		
-			//Add students into Course
+		//Add students into Course (students taken from the CSV File)
 		  for(int i = 1; i < records.size(); i++) {
 			  
 			 String[] tokens = records.get(i).split(",");
@@ -85,7 +82,35 @@ public class Main {
 			  
 		  }
 		  
-		  return currentCourse;
+		 //Select the Directory to put the Attendance Tracker File into.  (We will edit this file for every attendance taken)
+		  
+		  try{
+			  System.out.println("Select Save Directory");
+			  JFileChooser directory = new JFileChooser();
+			  	
+		      directory.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
+		      directory.showSaveDialog(null);
+		        
+		        
+			  String path = directory.getSelectedFile().getAbsolutePath().toString() + "\\" + currentCourse.getCourseName()+currentCourse.getDays() + currentCourse.getTime()+".csv";
+			  System.out.println(path);
+			  File newfile = new File(path);
+			  FileWriter fw = new FileWriter(newfile);
+			  BufferedWriter bw = new BufferedWriter(fw);
+			  bw.write(currentCourse.getCourseName() + "," + currentCourse.getCourseNumber() + "," + currentCourse.getDays() + "," + currentCourse.getTime());
+			  bw.newLine();
+			  for (int i = 0; i < currentCourse.students.size(); i ++) {
+					bw.write(currentCourse.students.get(i).getFirstName() + ",");
+					bw.write(currentCourse.students.get(i).getLastName() + ",");
+					bw.write(currentCourse.students.get(i).getId()+ ",");
+					bw.write(currentCourse.students.get(i).getGuardianEmail());
+					bw.newLine();
+			  }
+			  bw.close();
+		  } catch(Exception e){
+		
+		  }
+		 
 		  
 	}
 	
@@ -135,9 +160,7 @@ public class Main {
 			index += 7;
 		}
 		System.out.println("id: " + id);
-		
-		
-		
+		scanner.close();
 		
 
 	}

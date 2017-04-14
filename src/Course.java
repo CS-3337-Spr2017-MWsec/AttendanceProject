@@ -9,7 +9,7 @@ public class Course {
 	private ArrayList<AttendanceRecord> attendanceRecords = new ArrayList<AttendanceRecord>();
 	protected ArrayList<Student> students = new ArrayList<Student>();
 	
-	public Course(String courseName, String courseNumber, String days, String times) {
+	public Course(String courseName, String courseNumber, String days, String time) {
 		super();
 		this.courseName = courseName;
 		this.courseNumber = courseNumber;
