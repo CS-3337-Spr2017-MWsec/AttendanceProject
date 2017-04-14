@@ -1,3 +1,4 @@
+
 # Ignore everything
 *
 
@@ -6,7 +7,7 @@
 
 !src
 !src/**
-
+!*.csv
 
 !*.txt
 !*.md
