@@ -1,6 +1,6 @@
 
-import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /* example input: 
@@ -11,20 +11,20 @@ import java.util.ArrayList;
 public class AttendanceRecord{
 	
 	
-	DateFormat dateTime;
-	ArrayList<Student> students = new ArrayList<Student>();
+	Date date;
+	protected ArrayList<Student> students = new ArrayList<Student>();
 	
-	public AttendanceRecord(DateFormat dateTime, ArrayList<Student> students) {
+	public AttendanceRecord(Date date) {
 		super();
-		this.dateTime = dateTime;
-		this.students = students;
+		this.date = date;
+		
 	}
 	
-	public DateFormat getDateTime() {
-		return dateTime;
+	public Date getDateTime() {
+		return date;
 	}
-	public void setDateTime(DateFormat dateTime) {
-		this.dateTime = dateTime;
+	public void setDateTime(Date date) {
+		this.date = date;
 	}
 	public ArrayList<Student> getStudents() {
 		return students;

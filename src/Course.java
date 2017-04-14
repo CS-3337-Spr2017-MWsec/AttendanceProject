@@ -6,7 +6,7 @@ public class Course {
 	private String courseNumber;
 	private String days;
 	private String time;
-	private ArrayList<AttendanceRecord> attendanceRecords = new ArrayList<AttendanceRecord>();
+	protected ArrayList<AttendanceRecord> attendanceRecords = new ArrayList<AttendanceRecord>();
 	protected ArrayList<Student> students = new ArrayList<Student>();
 	
 	public Course(String courseName, String courseNumber, String days, String time) {

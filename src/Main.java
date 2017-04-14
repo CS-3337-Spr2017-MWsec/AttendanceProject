@@ -3,9 +3,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
-
+import java.sql.Timestamp;
 import javax.swing.JFileChooser;
 
 
@@ -13,10 +16,23 @@ import javax.swing.JFileChooser;
 public class Main {
 
 	public static void main(String[] args) {
-
-		createCourse();
-	
 		
+		createCourse();
+		
+		
+		
+		
+		Course currentCourse = null;
+		currentCourse = load();
+		
+		if(currentCourse.attendanceRecords.size() > 0){
+
+			System.out.println(currentCourse.attendanceRecords.get(0).students.get(0).getFirstName());
+			System.out.println(currentCourse.attendanceRecords.get(0).students.get(0).getLastName());
+			System.out.println(currentCourse.attendanceRecords.get(0).students.get(0).getLoginTime());
+			System.out.println(currentCourse.attendanceRecords.get(0).students.get(0).getLogoutTime());
+		
+		}
 	}
 	
 	//This method will be called when the professor wished to create a new Course. 
@@ -31,15 +47,13 @@ public class Main {
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int result = fileChooser.showOpenDialog(fileChooser);
 	
-		File selectedFile = null;
-	
-		    selectedFile = fileChooser.getSelectedFile();
-		    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+		
+		File selectedFile = fileChooser.getSelectedFile();
+		System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 		
 		
 		//Read from CSV File
 		ArrayList<String> records = new ArrayList<String>();
-		
 		  try
 		  {
 		    BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
@@ -77,7 +91,7 @@ public class Main {
 		  for(int i = 1; i < records.size(); i++) {
 			  
 			 String[] tokens = records.get(i).split(",");
-			 Student newStudent = new Student(tokens[1], tokens[2], Integer.parseInt(tokens[0]), tokens[3]);
+			 Student newStudent = new Student(tokens[0], tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
 			 currentCourse.students.add(newStudent);
 			  
 		  }
@@ -113,6 +127,101 @@ public class Main {
 		 
 		  
 	}
+	
+	
+	public static Course load() {
+		
+		System.out.println("Select Course to Take Attendance");
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(fileChooser);
+	
+		File selectedFile = null;
+	
+		    selectedFile = fileChooser.getSelectedFile();
+		    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+		
+		
+		//Read from CSV File
+		ArrayList<String> records = new ArrayList<String>();
+		
+		  try
+		  {
+		    BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+		    String line;
+		    while ((line = reader.readLine()) != null)
+		    {
+		      records.add(line);
+		    }
+		    
+		   
+		  }
+		  catch (Exception e)
+		  {
+		    System.err.format("Exception occurred trying to read '%s'.", selectedFile);
+		    e.printStackTrace();
+		   
+		  }
+		  
+		  String [] courseInfo = records.get(0).split(",");
+		  Course currentCourse = new Course(courseInfo[0], courseInfo[1], courseInfo[2], courseInfo[3]);
+		  if(courseInfo.length > 4) {
+			  for(int i = 4; i < courseInfo.length; i++) {
+				  String temp_date = courseInfo[i];
+				  String pattern = "MM/dd/yyyy";
+				  SimpleDateFormat format = new SimpleDateFormat(pattern);
+				  try {
+				      Date date = format.parse(temp_date);
+				      System.out.println(date);
+				      AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
+				      currentCourse.attendanceRecords.add(currentAttendanceRecord);
+				      for(int j =1; j < records.size(); j++) {
+				    	  String[] studentInfo = records.get(j).split(",");
+				    	  Student currentStudent = new Student(studentInfo[0], studentInfo[1], Integer.parseInt(studentInfo[2]), studentInfo[3]);
+				    	  String[]timeStamps = studentInfo[i].split("/");
+				    	  String delims = "[-,:,. ]+";
+				    	  
+				    	  String [] firsttimeStamp = timeStamps[0].split(delims);
+				    	  Long loginStamp =Long.parseLong(firsttimeStamp[0].concat(firsttimeStamp[1].concat(firsttimeStamp[2].concat(firsttimeStamp[3].concat(firsttimeStamp[4].concat(firsttimeStamp[5].concat(firsttimeStamp[6])))))));
+				    	  Timestamp loginTime = new Timestamp(loginStamp);
+				    	  
+				    	  String [] secondtimeStamp = timeStamps[0].split(delims);
+				    	  Long logoutStamp =Long.parseLong(secondtimeStamp[0].concat(secondtimeStamp[1].concat(firsttimeStamp[2].concat(firsttimeStamp[3].concat(firsttimeStamp[4].concat(firsttimeStamp[5].concat(firsttimeStamp[6])))))));
+				    	  Timestamp logoutTime = new Timestamp(logoutStamp);
+				    	  
+				    	  
+				    	  currentStudent.setLoginTime(loginTime);
+				    	  currentStudent.setLogoutTime(logoutTime);
+				    	  currentAttendanceRecord.students.add(currentStudent);
+				    	  currentCourse.attendanceRecords.add(currentAttendanceRecord);
+				      }
+				    } catch (ParseException e) {
+				      e.printStackTrace();
+				    }
+				  }
+			  
+			  }
+		  
+		  for(int i = 1; i < records.size(); i++) {
+			  
+				 String[] tokens = records.get(i).split(",");
+				 Student newStudent = new Student(tokens[0], tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
+				 currentCourse.students.add(newStudent);
+				 
+				 
+				 for(int j= 4; i < tokens.length; i ++) {
+					 
+				 }
+				   
+		  }
+		  
+		 
+		  
+		  return currentCourse;
+		  
+	
+	}
+	
 	
 	public static void parse() {
 		
