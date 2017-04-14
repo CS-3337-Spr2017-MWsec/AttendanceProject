@@ -66,7 +66,7 @@ public class Course {
 		this.attendanceRecords = attendanceRecords;	//Arguments should be AttendanceRecord not ArrayList<attendencerecord>
 	} 
 	
-	public ArrayList<Student> filterData(int numOfDays) { // filter and return attendence for # of days
+	public ArrayList<Student> filterData(int numOfDays) { // filter and return attendance for # of days
 		return null;
 	}
 	

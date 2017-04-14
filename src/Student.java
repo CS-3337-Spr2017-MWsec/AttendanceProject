@@ -10,6 +10,9 @@ public class Student {
 	private Timestamp loginTime;
 	private Timestamp logoutTime;
 	
+	public Student(){
+		
+	};
 	public Student(String firstName, String lastName, int id, String guardianEmail) {
 		
 		this.firstName = firstName;

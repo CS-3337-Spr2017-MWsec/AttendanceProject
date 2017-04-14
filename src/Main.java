@@ -3,36 +3,33 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-import java.sql.Timestamp;
 import javax.swing.JFileChooser;
 
 
-
+//Both files needed to test this project is in the project folder. (outside of the src folder).
 public class Main {
 
 	public static void main(String[] args) {
 		
+		
+		//1. Create a new course (use student_roster.csv as a sample roster)
 		createCourse();
 		
-		
-		
-		
+		//2. Load a course (use chemistryMW2-3.csv as a sample course)
 		Course currentCourse = null;
 		currentCourse = load();
 		
-		if(currentCourse.attendanceRecords.size() > 0){
-
-			System.out.println(currentCourse.attendanceRecords.get(0).students.get(0).getFirstName());
-			System.out.println(currentCourse.attendanceRecords.get(0).students.get(0).getLastName());
-			System.out.println(currentCourse.attendanceRecords.get(0).students.get(0).getLoginTime());
-			System.out.println(currentCourse.attendanceRecords.get(0).students.get(0).getLogoutTime());
+		//3. Take attendance
+		takeAttendance(currentCourse);
+	
 		
-		}
 	}
 	
 	//This method will be called when the professor wished to create a new Course. 
@@ -82,7 +79,7 @@ public class Main {
 			String days = scanner.nextLine();
 			System.out.println("Enter course time: ");
 			String time = scanner.nextLine();
-			scanner.close();
+			
 		
 		//Crate a Course from above information
 			Course currentCourse = new Course(name, number, days, time);
@@ -175,18 +172,18 @@ public class Main {
 				      System.out.println(date);
 				      AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
 				      currentCourse.attendanceRecords.add(currentAttendanceRecord);
-				      for(int j =1; j < records.size(); j++) {
+				      for(int j = 1; j < records.size(); j++) {
 				    	  String[] studentInfo = records.get(j).split(",");
 				    	  Student currentStudent = new Student(studentInfo[0], studentInfo[1], Integer.parseInt(studentInfo[2]), studentInfo[3]);
 				    	  String[]timeStamps = studentInfo[i].split("/");
 				    	  String delims = "[-,:,. ]+";
 				    	  
-				    	  String [] firsttimeStamp = timeStamps[0].split(delims);
-				    	  Long loginStamp =Long.parseLong(firsttimeStamp[0].concat(firsttimeStamp[1].concat(firsttimeStamp[2].concat(firsttimeStamp[3].concat(firsttimeStamp[4].concat(firsttimeStamp[5].concat(firsttimeStamp[6])))))));
+				    	  String [] firstTimeStamp = timeStamps[0].split(delims);
+				    	  Long loginStamp =Long.parseLong(firstTimeStamp[0].concat(firstTimeStamp[1].concat(firstTimeStamp[2].concat(firstTimeStamp[3].concat(firstTimeStamp[4].concat(firstTimeStamp[5].concat(firstTimeStamp[6])))))));
 				    	  Timestamp loginTime = new Timestamp(loginStamp);
 				    	  
-				    	  String [] secondtimeStamp = timeStamps[0].split(delims);
-				    	  Long logoutStamp =Long.parseLong(secondtimeStamp[0].concat(secondtimeStamp[1].concat(firsttimeStamp[2].concat(firsttimeStamp[3].concat(firsttimeStamp[4].concat(firsttimeStamp[5].concat(firsttimeStamp[6])))))));
+				    	  String [] secondTimeStamp = timeStamps[0].split(delims);
+				    	  Long logoutStamp =Long.parseLong(secondTimeStamp[0].concat(secondTimeStamp[1].concat(secondTimeStamp[2].concat(secondTimeStamp[3].concat(secondTimeStamp[4].concat(secondTimeStamp[5].concat(secondTimeStamp[6])))))));
 				    	  Timestamp logoutTime = new Timestamp(logoutStamp);
 				    	  
 				    	  
@@ -201,18 +198,14 @@ public class Main {
 				  }
 			  
 			  }
+		  System.out.println(records.size());
 		  
 		  for(int i = 1; i < records.size(); i++) {
 			  
 				 String[] tokens = records.get(i).split(",");
 				 Student newStudent = new Student(tokens[0], tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
 				 currentCourse.students.add(newStudent);
-				 
-				 
-				 for(int j= 4; i < tokens.length; i ++) {
-					 
-				 }
-				   
+				 System.out.println(i);
 		  }
 		  
 		 
@@ -222,54 +215,102 @@ public class Main {
 	
 	}
 	
-	
-	public static void parse() {
+	public static void takeAttendance(Course currentCourse) {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date date = new Date();
+		dateFormat.format(date);
+		AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
+
+		Student currentStudent = new Student();
+		System.out.println("System in Login Mode");
+		do {
+			currentStudent = parse(currentCourse);
+			if(currentStudent.getId() == 304999154){
+				break;
+			}
+			Timestamp loginTime = new Timestamp(System.currentTimeMillis());
+			currentStudent.setLoginTime(loginTime);
+			currentAttendanceRecord.students.add(currentStudent);
+			
+		}while(currentStudent.getId() != 304999154);
+		
+		System.out.println("System in Standby Mode");
+		currentStudent = new Student();
+		do{
+			currentStudent = parse(currentCourse);
+			if(currentStudent.getId() == 304999154){
+				break;
+			}
+			System.out.println("System in Standby Mode");
+			
+		}while(currentStudent.getId() != 304999154);
+			System.out.println("System in Logout Mode");
+			currentStudent = new Student();
+		do {
+			currentStudent = parse(currentCourse);
+			if(currentStudent.getId() == 304999154){
+				break;
+			}
+			
+			for(int i = 0; i <currentAttendanceRecord.students.size(); i++) {
+				if(currentStudent.getId() == currentAttendanceRecord.students.get(i).getId()) {
+					Timestamp logoutTime = new Timestamp(System.currentTimeMillis());
+					currentAttendanceRecord.students.get(i).setLogoutTime(logoutTime);
+				}
+			}
+		}while(currentStudent.getId() != 304999154);
+		
+		currentCourse.attendanceRecords.add(currentAttendanceRecord);
+		
+	}
+
+	public static Student parse(Course currentCourse) {
 		
 
 		Administrator test = new Administrator("Name","Mr","Richards","email","richards","ilovejose");
 		//example: student card scan
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("scan now");
-		String student = scanner.next();
-		// %B6048880000790184^ROJAS/CESAR^4912120000000000000000000000000?;6048880000790184=4912120304418483?
-		//
+		String student = "";
+		do {
+			System.out.println("scan now");
+			Scanner scanner = new Scanner(System.in);
+			student = scanner.nextLine();
+			
+			if (student.length() < 95){
+				System.out.println("Scan Failed!!!!");
+			}
+			
+		}while(student.length() < 95);
 		
-		
-		String trash;
-		String trash_2;
 		String firstName;
 		String lastName;
-		String trash_3;
-		String trash_4;
-		String midName;
 		String temp_id;
-		
 		
 		int number = 1;
 		String delims = "[%,/,?,=,;,^, ]+";
 		String[] tokens = student.split(delims);
-		for (int i = 0; i < tokens.length; i++)
-			
-			trash = tokens[0];
-			trash_2 = tokens[1];
+
 			firstName = tokens[2];
 			lastName = tokens[3];
-			trash_3 = tokens[4];
-			trash_4 = tokens[5];
 			temp_id = tokens[6];
-			String id = temp_id.substring(7, temp_id.length() -1);
+			int id = Integer.parseInt(temp_id.substring(7, temp_id.length()));
+	
+		
+		Student currentStudent = new Student();
+		for(int i = 0; i < currentCourse.students.size(); i ++) {
+			if(id == currentCourse.students.get(i).getId()){
+				currentStudent = currentCourse.students.get(i);
+			}
+		}
+		
+	
 		System.out.println("firstName: " + firstName);
 		System.out.println("lastName: " + lastName);
+		
 	
-		//System.out.println("id: " + temp_id);
-		ArrayList<String> strings = new ArrayList<String>();
-		int index = 0;
-		while (index < temp_id.length()) {
-			strings.add(temp_id.substring(index, Math.min(index + 7, temp_id.length())));
-			index += 7;
-		}
 		System.out.println("id: " + id);
-		scanner.close();
+	
+		
+		return currentStudent;
 		
 
 	}
