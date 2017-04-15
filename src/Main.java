@@ -296,5 +296,61 @@ public class Main {
 		return currentStudent;
 
 	}
+	
+	public Student search(int id, Course currentCourse) {
+		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
+		AttendanceRecord last = temp.get(temp.size()-1);
+		ArrayList<Student> studentlist = last.getStudents();
+		for(Student a: studentlist) {
+			if(a.getId()==id) 
+				System.out.print("Name: "+ a.getFirstName() + " " + a.getLastName());
+				System.out.print("Log in time: " + a.getLoginTime());
+				System.out.print("Log out time: " +a.getLogoutTime());
+				return a;
+		}
+		return null;
+	}
+	
+	public Student edit(int id, Course currentCourse) {
+		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
+		int currentDateSelected = temp.size()-1;
+		Date today = new Date();
+		today.setHours(0);
+		
+		//Get user input date;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please input the Date you want to edit (YYYY/MM/DD): ");
+		String i = sc.nextLine();
+		
+		//Formats input string into a Date object and finds the difference of days between today and user input date
+		String startDateString = i;
+	    DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
+	    Date startDate;
+	    try {
+	        startDate = df.parse(startDateString);
+	        String newDateString = df.format(startDate);
+	        System.out.println(newDateString);
+	    } catch (ParseException e) {
+	        e.printStackTrace();
+	    }
+	    long diff = Math.abs(today.getTime() - startDate.getTime());
+	    long diffDays = diff / (24 * 60 * 60 * 1000);
+	    
+	    
+	    //Subtract todays day by the diff of dates and grab the Student list for that day 
+	    currentDateSelected = currentDateSelected - (int)diffDays;
+	    ArrayList<Student> currentARStudentList = temp.get(currentDateSelected).getStudents();
+	    
+	    
+	    //Iterate through students and invert status when the student is found
+	    for(Student a:currentARStudentList) 
+	    	if(a.getId()==id) {
+	    		Scanner input = new Scanner(System.in);
+	    		System.out.println("Current status for " + a.getFirstName() + " " + a.getLastName() + " is " + a.getStatus() + ". Would you like this to be changed? Y/N ");
+	    		String scinput = input.nextLine();
+	    		if(scinput.toUpperCase()=="Y") 
+	    			a.setStatus(!a.getStatus());
+	    	}
+	}
 
 }// end of Main()
