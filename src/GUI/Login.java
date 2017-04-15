@@ -24,10 +24,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
  
-/**
-*
-* @web http://zoranpavlovic.blogspot.com/
-*/
 public class Login extends Application {
  
               String user = "JoseM";
