@@ -22,8 +22,10 @@ public class Main {
 		createCourse();
 
 		// 2. Load a course (use chemistryMW2-3.csv as a sample course)
-		Course currentCourse = null;
-		currentCourse = load();
+		
+		
+		File currentFile = openFile();
+		Course currentCourse = load(currentFile);
 
 		// 3. Take attendance
 		takeAttendance(currentCourse);
@@ -118,9 +120,8 @@ public class Main {
 		}
 
 	}
-
-	public static Course load() {
-
+	
+	public static File openFile() {
 		System.out.println("Select Course to Take Attendance");
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -130,6 +131,11 @@ public class Main {
 
 		selectedFile = fileChooser.getSelectedFile();
 		System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+		return selectedFile;
+	}
+
+	public static Course load(File selectedFile) {
+
 
 		// Read from CSV File
 		ArrayList<String> records = new ArrayList<String>();

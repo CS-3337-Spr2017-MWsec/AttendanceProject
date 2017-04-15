@@ -20,10 +20,10 @@ public class AttendanceRecord{
 		
 	}
 	
-	public Date getDateTime() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDateTime(Date date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public ArrayList<Student> getStudents() {
