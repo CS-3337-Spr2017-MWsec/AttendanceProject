@@ -94,7 +94,7 @@ public class Main extends Application {
                            dropShadow.setOffsetY(5);
  
                            Scene scene = new Scene(bp, 550, 450);
-                            //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+                           scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
                            window.setScene(scene);
                            window.show();
  
