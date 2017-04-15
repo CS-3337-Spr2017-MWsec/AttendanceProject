@@ -1,0 +1,28 @@
+#hb2 {
+ -fx-background-color:  orange;
+ -fx-border-color: white;
+ -fx-border-radius: 20;
+ -fx-padding: 10 10 10 10;
+ -fx-background-radius: 20;
+ -fx-alignment: center ;
+ 
+}
+
+#bp2 {
+ -fx-background-color: black;
+ -fx-border-color: white;
+ -fx-border-radius: 20;
+ -fx-padding: 10 10 10 10;
+ -fx-background-radius: 20;
+ 
+
+}
+
+#hb3 {
+ -fx-background-color:  grey;
+ -fx-border-color: white;
+ -fx-border-radius: 10;
+ -fx-padding: 10 10 10 10;
+ -fx-background-radius: 5;
+ -fx-alignment: center ;
+}
