@@ -1,0 +1,10 @@
+Attendance Project Messaging Module Instructions
+
+To get Message.java running you need to add mail.jar into the project library. Just follow the steps:
+
+1. First download the "mail.jar" file.
+2. On the project right click and go to "Properties".
+3. In properties click on "Java Build Path".
+4. Choose the "Libraries" tab.
+5. Click "Add External JARs..."
+6. choose the "mail.jar" where ever it is you saved it on your computer.
