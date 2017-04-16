@@ -41,6 +41,16 @@ public class AttendanceRecord{
 										
 	}
 	
+	public int getStudentById(int Id) {
+		int index = -1;
+		
+		for(int i = 0 ; i < this.getStudents().size(); i ++) {
+			if(this.getStudents().get(i).getId() == Id) {
+				return index;
+			}
+		}
+		return index;
+	}
 	
 	
 	
