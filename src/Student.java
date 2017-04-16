@@ -1,3 +1,5 @@
+package src;
+
 import java.sql.Timestamp;
 
 public class Student {

@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -297,6 +298,68 @@ public class Main {
 
 		return currentStudent;
 
+	}
+	
+	public static File writeToFile(File selectedFile, Course currentCourse) {
+
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+
+		try {
+			fw = new FileWriter(selectedFile);
+			bw = new BufferedWriter(fw);
+			bw.write(currentCourse.getCourseName() + "," + currentCourse.getCourseNumber()+ "," + currentCourse.getDays() + "," + currentCourse.getTime());
+			String courseInfo = currentCourse.getCourseName() + "," + currentCourse.getCourseNumber()+ "," + currentCourse.getDays() + "," + currentCourse.getTime();
+			for(int i = 0; i < currentCourse.getAttendanceRecords().size(); i++) {
+				courseInfo += currentCourse.getAttendanceRecords().get(i).getDate() + ",";		
+			}
+			courseInfo += "\n";
+			bw.write(courseInfo);
+			
+			String studentInfo = "";
+			for(int i = 0; i < currentCourse.students.size(); i++){
+				int studentId = currentCourse.students.get(i).getId();
+				studentInfo +=  currentCourse.students.get(i).getFirstName() + "," + currentCourse.students.get(i).getLastName()+ "," + studentId+ "," + currentCourse.students.get(i).getGuardianEmail();
+				if(currentCourse.getAttendanceRecords().isEmpty()) {
+					studentInfo += "\n";
+				}else
+					studentInfo += ",";
+					for(int j = 0; j < currentCourse.attendanceRecords.size(); j++) {
+					int index = currentCourse.attendanceRecords.get(j).getStudentById(studentId);
+					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(index).getLoginTime()+ "//";
+					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(index).getLogoutTime() + "\n";
+				
+					}
+			}
+			bw.write(studentInfo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null)
+					bw.close();
+				if (fw != null)
+					fw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+
+		}
+
+		return selectedFile;
+	}
+
+	public static File openFile() {
+		System.out.println("Select Course to Take Attendance");
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(fileChooser);
+
+		File selectedFile = null;
+
+		selectedFile = fileChooser.getSelectedFile();
+		System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+		return selectedFile;
 	}
 	
 	public Student search(int id, Course currentCourse) {

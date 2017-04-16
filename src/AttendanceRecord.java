@@ -1,3 +1,5 @@
+package src;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,10 +22,10 @@ public class AttendanceRecord{
 		
 	}
 	
-	public Date getDateTime() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDateTime(Date date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public ArrayList<Student> getStudents() {
@@ -39,6 +41,17 @@ public class AttendanceRecord{
 	}
 	public void checkNotification(Student student) {	//Check to see if student has signed up for absent reports. if yes send email else do nothing
 										
+	}
+	
+	public int getStudentById(int Id) {
+		int index = -1;
+		
+		for(int i = 0 ; i < this.getStudents().size(); i ++) {
+			if(this.getStudents().get(i).getId() == Id) {
+				return index;
+			}
+		}
+		return index;
 	}
 	
 	
