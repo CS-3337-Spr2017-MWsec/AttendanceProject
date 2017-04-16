@@ -311,7 +311,7 @@ public class Main {
 		return null;
 	}
 	
-	public Student edit(int id, Course currentCourse) {
+	public void edit(int id, Course currentCourse) {
 		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
 		int currentDateSelected = temp.size()-1;
 		Date today = new Date();
@@ -325,7 +325,7 @@ public class Main {
 		//Formats input string into a Date object and finds the difference of days between today and user input date
 		String startDateString = i;
 	    DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
-	    Date startDate;
+	    Date startDate = null;
 	    try {
 	        startDate = df.parse(startDateString);
 	        String newDateString = df.format(startDate);
