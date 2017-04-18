@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 public class Course {
@@ -69,7 +70,6 @@ public class Course {
 	public ArrayList<Student> filterData(int numOfDays) { // filter and return attendance for # of days
 		return null;
 	}
-	
 	
 	
 }

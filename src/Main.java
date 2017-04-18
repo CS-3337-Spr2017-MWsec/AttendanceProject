@@ -1,3 +1,5 @@
+
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,9 +29,10 @@ public class Main {
 
 		File currentFile = openFile();
 		Course currentCourse = load(currentFile);
-		writeToFile(currentFile, currentCourse);
+		//writeToFile(currentFile, currentCourse);
 		// 3. Take attendance
-		//takeAttendance(currentCourse);
+		takeAttendance(currentCourse);
+		
 
 	}
 
@@ -289,7 +292,7 @@ public class Main {
 		return currentStudent;
 
 	}
-
+	
 	public static File writeToFile(File selectedFile, Course currentCourse) {
 
 		BufferedWriter bw = null;
@@ -351,4 +354,86 @@ public class Main {
 		System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 		return selectedFile;
 	}
+	
+	public Student search(int id, Course currentCourse) {
+		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
+		AttendanceRecord last = temp.get(temp.size()-1);
+		ArrayList<Student> studentlist = last.getStudents();
+		for(Student a: studentlist) {
+			if(a.getId()==id) 
+				System.out.print("Name: "+ a.getFirstName() + " " + a.getLastName());
+				System.out.print("Log in time: " + a.getLoginTime());
+				System.out.print("Log out time: " +a.getLogoutTime());
+				return a;
+		}
+		return null;
+	}
+	
+	public void edit(int id, Course currentCourse) {
+		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
+		int currentDateSelected = temp.size()-1;
+		Date today = new Date();
+		today.setHours(0);
+		
+		//Get user input date;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please input the Date you want to edit (YYYY/MM/DD): ");
+		String i = sc.nextLine();
+		
+		//Formats input string into a Date object and finds the difference of days between today and user input date
+		String startDateString = i;
+	    DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
+	    Date startDate = null;
+	    try {
+	        startDate = df.parse(startDateString);
+	        String newDateString = df.format(startDate);
+	        System.out.println(newDateString);
+	    } catch (ParseException e) {
+	        e.printStackTrace();
+	    }
+	    long diff = Math.abs(today.getTime() - startDate.getTime());
+	    long diffDays = diff / (24 * 60 * 60 * 1000);
+	    
+	    
+	    //Grab the Student list for the requested day
+	    currentDateSelected = currentDateSelected - (int)diffDays;
+	    ArrayList<Student> currentARStudentList = temp.get(currentDateSelected).getStudents();
+	    
+	    
+	    //Iterate through students and change login and log out times when the student is found
+	    for(Student a:currentARStudentList) 
+	    	if(a.getId()==id) {
+	    		
+	    		//Absent to present
+	    		if(a.getLoginTime()==null && a.getLogoutTime()==null) {
+		    		Scanner input = new Scanner(System.in);
+		    		System.out.println(a.getFirstName() + " " + a.getLastName() + "'s log time's for " + currentDateSelected 
+		    				+ ". Log in: " + a.getLoginTime() + ". Log out time: "+ a.getLogoutTime() 
+		    					+ ". Would you like to make this student present? Y/N ");
+		    		String scinput = input.nextLine();
+		    		if(scinput.toUpperCase()=="Y") {
+		    			//Trick the system into logging in and logging out without the need for user input Timestamps
+		    			Timestamp tempLogin = new Timestamp(System.currentTimeMillis());
+		    			a.setLoginTime(tempLogin);
+		    			Timestamp tempLogout = new Timestamp(System.currentTimeMillis());
+		    			a.setLogoutTime(tempLogout);
+		    		}
+	    		}
+	    		
+	    		//Present to absent
+	    		if(a.getLoginTime()!=null || a.getLogoutTime()!=null) {
+	    			Scanner input = new Scanner(System.in);
+		    		System.out.println(a.getFirstName() + " " + a.getLastName() + "'s log time's for " + currentDateSelected 
+		    				+ ". Log in: " + a.getLoginTime() + ". Log out time: "+ a.getLogoutTime() 
+		    					+ ". Would you like to mark this student absent? Y/N ");
+		    		String scinput = input.nextLine();
+		    		if(scinput.toUpperCase()=="Y") {
+		    			a.setLoginTime(null);
+		    			a.setLogoutTime(null);
+	    		}
+	    	}
+	    }
+	}
+
+
 }// end of Main()

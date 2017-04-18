@@ -1,3 +1,4 @@
+
 import java.sql.Timestamp;
 
 public class Student {
@@ -77,6 +78,10 @@ public class Student {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+	
+	public boolean getStatus() {
+		return this.status;
 	}
 
 	
