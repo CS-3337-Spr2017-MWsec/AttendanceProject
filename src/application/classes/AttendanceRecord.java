@@ -1,3 +1,4 @@
+package application.classes;
 
 
 
@@ -14,7 +15,7 @@ public class AttendanceRecord{
 	
 	
 	Date date;
-	protected ArrayList<Student> students = new ArrayList<Student>();
+	public ArrayList<Student> students = new ArrayList<Student>();
 	
 	public AttendanceRecord(Date date) {
 		super();

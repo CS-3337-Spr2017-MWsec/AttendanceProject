@@ -1,4 +1,4 @@
-
+package application;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,42 +16,69 @@ import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 
-//Both files needed to test this project is in the project folder. (outside of the src folder).
+import application.classes.Administrator;
+import application.classes.AttendanceRecord;
+import application.classes.Course;
+import application.classes.Student;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application {
 
-	public static void main(String[] args) {
+	private static Stage primaryStage;
+	private static BorderPane mainLayout;
+	public static File file = null;
+	public static Course currentCourse = null;
 
-		// 1. Create a new course (use student_roster.csv as a sample roster)
-		createCourse();
-
-		// 2. Load a course (use chemistryMW2-3.csv as a sample course)
-
-		File currentFile = openFile();
-		Course currentCourse = load(currentFile);
-		//writeToFile(currentFile, currentCourse);
-		// 3. Take attendance
-		takeAttendance(currentCourse);
-		
-
+	@Override
+	public void start(Stage primaryStage) throws IOException {
+		this.primaryStage = primaryStage;
+		this.primaryStage.setTitle("Attendance Tracker");
+		showLoginView();
 	}
-
-	// This method will be called when the professor wished to create a new
-	// Course.
-	// it prompts the professor to upload a csv file and uses it to create a new
-	// file
-	// this new file will have the course info and student
-	// roster(course.students). to be edited each attendance day
+	
+	//Fx Code
+	
+	public void showLoginView() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/LoginView.fxml"));
+		mainLayout = loader.load();
+		Scene scene = new Scene(mainLayout);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
+	
+	public static void showCourseScene() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/CourseView.fxml"));
+		BorderPane courses = loader.load();
+		mainLayout.setCenter(courses);
+		
+		
+	}
+	
+	public static void showHomeScene() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/HomeView.fxml"));
+		BorderPane home = loader.load();
+		mainLayout.setCenter(home);
+	}
+	
+	
+	//Java Code
 	public static void createCourse() {
 
 		// Choose a correctly formatted CSV file to upload
-		System.out.println("Upload CSV file");
+		
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int result = fileChooser.showOpenDialog(fileChooser);
 
 		File selectedFile = fileChooser.getSelectedFile();
-		System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+	
 
 		// Read from CSV File
 		ArrayList<String> records = new ArrayList<String>();
@@ -96,7 +123,7 @@ public class Main {
 		// will edit this file for every attendance taken)
 
 		try {
-			System.out.println("Select Save Directory");
+		
 			JFileChooser directory = new JFileChooser();
 
 			directory.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -125,7 +152,7 @@ public class Main {
 
 	}
 
-	public static Course load(File selectedFile) {
+	public static Course load(File selectedFile) throws IOException {
 
 		// Read from CSV File
 		ArrayList<String> records = new ArrayList<String>();
@@ -152,7 +179,6 @@ public class Main {
 				SimpleDateFormat format = new SimpleDateFormat(pattern);
 				try {
 					Date date = format.parse(temp_date);
-					System.out.println(date);
 					AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
 					currentCourse.attendanceRecords.add(currentAttendanceRecord);
 					for (int j = 1; j < records.size(); j++) {
@@ -185,16 +211,15 @@ public class Main {
 			}
 
 		}
-		System.out.println(records.size());
+	
 
 		for (int i = 1; i < records.size(); i++) {
 
 			String[] tokens = records.get(i).split(",");
 			Student newStudent = new Student(tokens[0], tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
 			currentCourse.students.add(newStudent);
-			System.out.println(i);
 		}
-
+		showHomeScene();
 		return currentCourse;
 
 	}
@@ -292,7 +317,7 @@ public class Main {
 		return currentStudent;
 
 	}
-	
+
 	public static File writeToFile(File selectedFile, Course currentCourse) {
 
 		BufferedWriter bw = null;
@@ -301,28 +326,34 @@ public class Main {
 		try {
 			fw = new FileWriter(selectedFile);
 			bw = new BufferedWriter(fw);
-			bw.write(currentCourse.getCourseName() + "," + currentCourse.getCourseNumber()+ "," + currentCourse.getDays() + "," + currentCourse.getTime());
-			String courseInfo = currentCourse.getCourseName() + "," + currentCourse.getCourseNumber()+ "," + currentCourse.getDays() + "," + currentCourse.getTime();
-			for(int i = 0; i < currentCourse.getAttendanceRecords().size(); i++) {
-				courseInfo += currentCourse.getAttendanceRecords().get(i).getDate() + ",";		
+			bw.write(currentCourse.getCourseName() + "," + currentCourse.getCourseNumber() + ","
+					+ currentCourse.getDays() + "," + currentCourse.getTime());
+			String courseInfo = currentCourse.getCourseName() + "," + currentCourse.getCourseNumber() + ","
+					+ currentCourse.getDays() + "," + currentCourse.getTime();
+			for (int i = 0; i < currentCourse.getAttendanceRecords().size(); i++) {
+				courseInfo += currentCourse.getAttendanceRecords().get(i).getDate() + ",";
 			}
 			courseInfo += "\n";
 			bw.write(courseInfo);
-			
+
 			String studentInfo = "";
-			for(int i = 0; i < currentCourse.students.size(); i++){
+			for (int i = 0; i < currentCourse.students.size(); i++) {
 				int studentId = currentCourse.students.get(i).getId();
-				studentInfo +=  currentCourse.students.get(i).getFirstName() + "," + currentCourse.students.get(i).getLastName()+ "," + studentId+ "," + currentCourse.students.get(i).getGuardianEmail();
-				if(currentCourse.getAttendanceRecords().isEmpty()) {
+				studentInfo += currentCourse.students.get(i).getFirstName() + ","
+						+ currentCourse.students.get(i).getLastName() + "," + studentId + ","
+						+ currentCourse.students.get(i).getGuardianEmail();
+				if (currentCourse.getAttendanceRecords().isEmpty()) {
 					studentInfo += "\n";
-				}else
+				} else
 					studentInfo += ",";
-					for(int j = 0; j < currentCourse.attendanceRecords.size(); j++) {
+				for (int j = 0; j < currentCourse.attendanceRecords.size(); j++) {
 					int index = currentCourse.attendanceRecords.get(j).getStudentById(studentId);
-					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(index).getLoginTime()+ "//";
-					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(index).getLogoutTime() + "\n";
-				
-					}
+					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(index).getLoginTime()
+							+ "//";
+					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(index).getLogoutTime()
+							+ "\n";
+
+				}
 			}
 			bw.write(studentInfo);
 		} catch (IOException e) {
@@ -343,7 +374,7 @@ public class Main {
 	}
 
 	public static File openFile() {
-		System.out.println("Select Course to Take Attendance");
+
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int result = fileChooser.showOpenDialog(fileChooser);
@@ -351,89 +382,95 @@ public class Main {
 		File selectedFile = null;
 
 		selectedFile = fileChooser.getSelectedFile();
-		System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+		file = selectedFile;
 		return selectedFile;
 	}
-	
+
 	public Student search(int id, Course currentCourse) {
 		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
-		AttendanceRecord last = temp.get(temp.size()-1);
+		AttendanceRecord last = temp.get(temp.size() - 1);
 		ArrayList<Student> studentlist = last.getStudents();
-		for(Student a: studentlist) {
-			if(a.getId()==id) 
-				System.out.print("Name: "+ a.getFirstName() + " " + a.getLastName());
-				System.out.print("Log in time: " + a.getLoginTime());
-				System.out.print("Log out time: " +a.getLogoutTime());
-				return a;
+		for (Student a : studentlist) {
+			if (a.getId() == id)
+				System.out.print("Name: " + a.getFirstName() + " " + a.getLastName());
+			System.out.print("Log in time: " + a.getLoginTime());
+			System.out.print("Log out time: " + a.getLogoutTime());
+			return a;
 		}
 		return null;
 	}
-	
+
 	public void edit(int id, Course currentCourse) {
 		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
-		int currentDateSelected = temp.size()-1;
+		int currentDateSelected = temp.size() - 1;
 		Date today = new Date();
 		today.setHours(0);
-		
-		//Get user input date;
+
+		// Get user input date;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please input the Date you want to edit (YYYY/MM/DD): ");
 		String i = sc.nextLine();
-		
-		//Formats input string into a Date object and finds the difference of days between today and user input date
+
+		// Formats input string into a Date object and finds the difference of
+		// days between today and user input date
 		String startDateString = i;
-	    DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
-	    Date startDate = null;
-	    try {
-	        startDate = df.parse(startDateString);
-	        String newDateString = df.format(startDate);
-	        System.out.println(newDateString);
-	    } catch (ParseException e) {
-	        e.printStackTrace();
-	    }
-	    long diff = Math.abs(today.getTime() - startDate.getTime());
-	    long diffDays = diff / (24 * 60 * 60 * 1000);
-	    
-	    
-	    //Grab the Student list for the requested day
-	    currentDateSelected = currentDateSelected - (int)diffDays;
-	    ArrayList<Student> currentARStudentList = temp.get(currentDateSelected).getStudents();
-	    
-	    
-	    //Iterate through students and change login and log out times when the student is found
-	    for(Student a:currentARStudentList) 
-	    	if(a.getId()==id) {
-	    		
-	    		//Absent to present
-	    		if(a.getLoginTime()==null && a.getLogoutTime()==null) {
-		    		Scanner input = new Scanner(System.in);
-		    		System.out.println(a.getFirstName() + " " + a.getLastName() + "'s log time's for " + currentDateSelected 
-		    				+ ". Log in: " + a.getLoginTime() + ". Log out time: "+ a.getLogoutTime() 
-		    					+ ". Would you like to make this student present? Y/N ");
-		    		String scinput = input.nextLine();
-		    		if(scinput.toUpperCase()=="Y") {
-		    			//Trick the system into logging in and logging out without the need for user input Timestamps
-		    			Timestamp tempLogin = new Timestamp(System.currentTimeMillis());
-		    			a.setLoginTime(tempLogin);
-		    			Timestamp tempLogout = new Timestamp(System.currentTimeMillis());
-		    			a.setLogoutTime(tempLogout);
-		    		}
-	    		}
-	    		
-	    		//Present to absent
-	    		if(a.getLoginTime()!=null || a.getLogoutTime()!=null) {
-	    			Scanner input = new Scanner(System.in);
-		    		System.out.println(a.getFirstName() + " " + a.getLastName() + "'s log time's for " + currentDateSelected 
-		    				+ ". Log in: " + a.getLoginTime() + ". Log out time: "+ a.getLogoutTime() 
-		    					+ ". Would you like to mark this student absent? Y/N ");
-		    		String scinput = input.nextLine();
-		    		if(scinput.toUpperCase()=="Y") {
-		    			a.setLoginTime(null);
-		    			a.setLogoutTime(null);
-	    		}
-	    	}
-	    }
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		Date startDate = null;
+		try {
+			startDate = df.parse(startDateString);
+			String newDateString = df.format(startDate);
+			System.out.println(newDateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		long diff = Math.abs(today.getTime() - startDate.getTime());
+		long diffDays = diff / (24 * 60 * 60 * 1000);
+
+		// Grab the Student list for the requested day
+		currentDateSelected = currentDateSelected - (int) diffDays;
+		ArrayList<Student> currentARStudentList = temp.get(currentDateSelected).getStudents();
+
+		// Iterate through students and change login and log out times when the
+		// student is found
+		for (Student a : currentARStudentList)
+			if (a.getId() == id) {
+
+				// Absent to present
+				if (a.getLoginTime() == null && a.getLogoutTime() == null) {
+					Scanner input = new Scanner(System.in);
+					System.out.println(a.getFirstName() + " " + a.getLastName() + "'s log time's for "
+							+ currentDateSelected + ". Log in: " + a.getLoginTime() + ". Log out time: "
+							+ a.getLogoutTime() + ". Would you like to make this student present? Y/N ");
+					String scinput = input.nextLine();
+					if (scinput.toUpperCase() == "Y") {
+						// Trick the system into logging in and logging out
+						// without the need for user input Timestamps
+						Timestamp tempLogin = new Timestamp(System.currentTimeMillis());
+						a.setLoginTime(tempLogin);
+						Timestamp tempLogout = new Timestamp(System.currentTimeMillis());
+						a.setLogoutTime(tempLogout);
+					}
+				}
+
+				// Present to absent
+				if (a.getLoginTime() != null || a.getLogoutTime() != null) {
+					Scanner input = new Scanner(System.in);
+					System.out.println(a.getFirstName() + " " + a.getLastName() + "'s log time's for "
+							+ currentDateSelected + ". Log in: " + a.getLoginTime() + ". Log out time: "
+							+ a.getLogoutTime() + ". Would you like to mark this student absent? Y/N ");
+					String scinput = input.nextLine();
+					if (scinput.toUpperCase() == "Y") {
+						a.setLoginTime(null);
+						a.setLogoutTime(null);
+					}
+				}
+			}
+	}
+
+	public static void main(String[] args) {
+
+		launch(args);
 	}
 
 
-}// end of Main()
+}

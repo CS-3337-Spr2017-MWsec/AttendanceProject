@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.CourseViewController">
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <GridPane BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="248.0" minHeight="0.0" prefHeight="57.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="460.0" minHeight="0.0" prefHeight="192.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="590.0" minHeight="10.0" prefHeight="219.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" onAction="#createCourse" prefHeight="96.0" prefWidth="154.0" text="Create Course">
+                     <GridPane.margin>
+                        <Insets left="100.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#loadCourse" prefHeight="92.0" prefWidth="156.0" text="Load Course" GridPane.columnIndex="1" />
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </GridPane>
+         </center>
+         <top>
+            <Label prefHeight="82.0" prefWidth="260.0" text="Course Selection" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="34.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets bottom="100.0" top="60.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+      </BorderPane>
+   </center>
+</BorderPane>

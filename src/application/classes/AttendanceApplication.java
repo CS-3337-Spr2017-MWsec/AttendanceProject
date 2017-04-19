@@ -1,3 +1,4 @@
+package application.classes;
 
 public class AttendanceApplication {
 
