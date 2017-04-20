@@ -186,23 +186,6 @@ public class Main extends Application {
 						Student currentStudent = new Student(studentInfo[0], studentInfo[1],
 								Integer.parseInt(studentInfo[2]), studentInfo[3]);
 						String[] timeStamps = studentInfo[i].split("/");
-						
-						/*String delims = "[-,:,. ]+";
-						
-						String[] firstTimeStamp = timeStamps[0].split(delims);
-						Long loginStamp = Long.parseLong(firstTimeStamp[0]
-								.concat(firstTimeStamp[1].concat(firstTimeStamp[2].concat(firstTimeStamp[3].concat(
-										firstTimeStamp[4].concat(firstTimeStamp[5].concat(firstTimeStamp[6])))))));
-						Timestamp loginTime = new Timestamp(loginStamp);
-						
-						
-						String[] secondTimeStamp = timeStamps[0].split(delims);
-						Long logoutStamp = Long.parseLong(secondTimeStamp[0]
-								.concat(secondTimeStamp[1].concat(secondTimeStamp[2].concat(secondTimeStamp[3].concat(
-										secondTimeStamp[4].concat(secondTimeStamp[5].concat(secondTimeStamp[6])))))));
-						Timestamp logoutTime = new Timestamp(logoutStamp);
-						
-						*/
 										
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 						
@@ -426,50 +409,51 @@ public class Main extends Application {
 		int numOfStudents = studentlist.size();
 		search(id,currentCourse);
 		
-		System.out.println("Temp size: "+ (temp.size()-1));
-		//if(checkID==1) {
-			System.out.println("How many days would you like to go back?");
-			Scanner sc = new Scanner(System.in);
-			int i = sc.nextInt();
+		System.out.println("How many days would you like to go back?");
+		Scanner sc = new Scanner(System.in);
+		int i = sc.nextInt();
 
 		    //Grab the Student list for the requested day
 		    ArrayList<Student> currentARStudentList = temp.get(temp.size()-1-i*(numOfStudents+1)).getStudents();
-		    
+
 		    //Iterate through students and change login and log out times when the student is found
 		    for(Student a:currentARStudentList) 
-		    	if(a.getId()==id) {
-		    		
-		    		//Absent to present
-		    		if(a.getLoginTime()==null && a.getLogoutTime()==null) {
-			    		Scanner input = new Scanner(System.in);
-			    		System.out.println("Name: " +a.getFirstName() + " " + a.getLastName()); 
-			    		System.out.println("Log in time: " + a.getLoginTime());
-			    		System.out.println("Log out time: "+ a.getLogoutTime());
-			    		System.out.println("Would you like to make this student present? Y/N ");
-			    		String scinput = input.nextLine();
-			    		if(scinput.toUpperCase()=="Y") {
-			    			//Trick the system into logging in and logging out without the need for user input Timestamps
-			    			Timestamp tempLogin = new Timestamp(System.currentTimeMillis());
-			    			a.setLoginTime(tempLogin);
-			    			Timestamp tempLogout = new Timestamp(System.currentTimeMillis());
-			    			a.setLogoutTime(tempLogout);
-			    		}
-		    		}
-		    		
-		    		//Present to absent
-		    		if(a.getLoginTime()!=null || a.getLogoutTime()!=null) {
-		    			Scanner input = new Scanner(System.in);
-			    		System.out.println("Name: " +a.getFirstName() + " " + a.getLastName()); 
-			    		System.out.println("Log in time: " + a.getLoginTime());
-			    		System.out.println("Log out time: "+ a.getLogoutTime());
-			    		System.out.println("Would you like to make this student absent? Y/N ");
-			    		String scinput = input.nextLine();
-			    		if(scinput.toUpperCase()=="Y") {
-			    			a.setLoginTime(null);
-			    			a.setLogoutTime(null);
-			    		}
-		    		}
-		    	}
+			if(a.getId()==id) {
+
+			//Absent to present
+			if(a.getLoginTime()==null && a.getLogoutTime()==null) {
+				Scanner input = new Scanner(System.in);
+				System.out.println("Name: " +a.getFirstName() + " " + a.getLastName()); 
+				System.out.println("Log in time: " + a.getLoginTime());
+				System.out.println("Log out time: "+ a.getLogoutTime());
+				System.out.println("Would you like to make this student present? Y/N ");
+				String scinput = input.nextLine();
+				if(scinput.toUpperCase()=="Y") {
+					//Trick the system into logging in and logging out without the need for user input Timestamps
+					Timestamp tempLogin = new Timestamp(System.currentTimeMillis());
+					a.setLoginTime(tempLogin);
+					Timestamp tempLogout = new Timestamp(System.currentTimeMillis());
+					a.setLogoutTime(tempLogout);
+					System.out.println("Student has been marked present");
+				}
+			}
+
+			//Present to absent
+			if(a.getLoginTime()!=null || a.getLogoutTime()!=null) {
+				Scanner input = new Scanner(System.in);
+				System.out.println("Name: " +a.getFirstName() + " " + a.getLastName()); 
+				System.out.println("Log in time: " + a.getLoginTime());
+				System.out.println("Log out time: "+ a.getLogoutTime());
+				System.out.println("Would you like to make this student absent? Y/N ");
+				String scinput = input.nextLine();
+				if(scinput.toUpperCase()=="Y") {
+					a.setLoginTime(null);
+					a.setLogoutTime(null);
+					System.out.println("Student has been marked absent");
+
+				}
+			}
+		}
 	}
 
 	public static void main(String[] args) {
