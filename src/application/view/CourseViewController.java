@@ -17,5 +17,6 @@ public class CourseViewController {
 	private void loadCourse() throws IOException {
 		main.openFile();
 		main.load(main.file);
+		
 	}
 }

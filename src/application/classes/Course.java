@@ -11,6 +11,10 @@ public class Course {
 	public ArrayList<AttendanceRecord> attendanceRecords = new ArrayList<AttendanceRecord>();
 	public ArrayList<Student> students = new ArrayList<Student>();
 	
+	public Course() {
+	}
+	
+	
 	public Course(String courseName, String courseNumber, String days, String time) {
 		super();
 		this.courseName = courseName;

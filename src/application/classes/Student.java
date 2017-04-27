@@ -84,7 +84,14 @@ public class Student {
 	public boolean getStatus() {
 		return this.status;
 	}
-
+	
+	public Student getStudentById(int id) {
+		if(id == this.id) {
+			return this;
+		}
+		return null;
+		
+	}
 	
 
 	

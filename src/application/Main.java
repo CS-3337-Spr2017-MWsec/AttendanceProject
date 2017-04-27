@@ -21,8 +21,10 @@ import application.classes.AttendanceRecord;
 import application.classes.Course;
 import application.classes.Student;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -31,7 +33,7 @@ public class Main extends Application {
 	private static Stage primaryStage;
 	private static BorderPane mainLayout;
 	public static File file = null;
-	public static Course currentCourse = null;
+	public static Course currentCourse = new Course();
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
@@ -39,9 +41,9 @@ public class Main extends Application {
 		this.primaryStage.setTitle("Attendance Tracker");
 		showLoginView();
 	}
-	
-	//Fx Code
-	
+
+	// Fx Code
+
 	public void showLoginView() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/LoginView.fxml"));
@@ -50,35 +52,35 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-	
+
 	public static void showCourseScene() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/CourseView.fxml"));
 		BorderPane courses = loader.load();
 		mainLayout.setCenter(courses);
-		
-		
 	}
-	
+
 	public static void showHomeScene() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/HomeView.fxml"));
 		BorderPane home = loader.load();
 		mainLayout.setCenter(home);
+
+
 	}
 	
 	
-	//Java Code
+
+	// Java Code
 	public static void createCourse() {
 
 		// Choose a correctly formatted CSV file to upload
-		
+
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int result = fileChooser.showOpenDialog(fileChooser);
 
 		File selectedFile = fileChooser.getSelectedFile();
-	
 
 		// Read from CSV File
 		ArrayList<String> records = new ArrayList<String>();
@@ -97,15 +99,19 @@ public class Main extends Application {
 		}
 
 		// Prompt user to enter Course information
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter course name: ");
-		String name = scanner.nextLine();
-		System.out.println("Enter course number: ");
-		String number = scanner.nextLine();
-		System.out.println("Enter course days: ");
-		String days = scanner.nextLine();
-		System.out.println("Enter course time: ");
-		String time = scanner.nextLine();
+		/*
+		 * Scanner scanner = new Scanner(System.in);
+		 * System.out.println("Enter course name: "); String name =
+		 * scanner.nextLine(); System.out.println("Enter course number: ");
+		 * String number = scanner.nextLine();
+		 * System.out.println("Enter course days: "); String days =
+		 * scanner.nextLine(); System.out.println("Enter course time: "); String
+		 * time = scanner.nextLine();
+		 */
+		String name = "SoftWareE";
+		String number = "3337";
+		String days = "MW";
+		String time = "6pm";
 
 		// Crate a Course from above information
 		Course currentCourse = new Course(name, number, days, time);
@@ -123,7 +129,7 @@ public class Main extends Application {
 		// will edit this file for every attendance taken)
 
 		try {
-		
+
 			JFileChooser directory = new JFileChooser();
 
 			directory.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -131,7 +137,7 @@ public class Main extends Application {
 
 			String path = directory.getSelectedFile().getAbsolutePath().toString() + "\\"
 					+ currentCourse.getCourseName() + currentCourse.getDays() + currentCourse.getTime() + ".csv";
-			System.out.println(path);
+			// System.out.println(path);
 			File newfile = new File(path);
 			FileWriter fw = new FileWriter(newfile);
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -152,7 +158,7 @@ public class Main extends Application {
 
 	}
 
-	public static Course load(File selectedFile) throws IOException {
+	public static void load(File selectedFile) throws IOException {
 
 		// Read from CSV File
 		ArrayList<String> records = new ArrayList<String>();
@@ -171,7 +177,10 @@ public class Main extends Application {
 		}
 
 		String[] courseInfo = records.get(0).split(",");
-		Course currentCourse = new Course(courseInfo[0], courseInfo[1], courseInfo[2], courseInfo[3]);
+		currentCourse.setCourseName(courseInfo[0]);
+		currentCourse.setCourseNumber(courseInfo[1]);
+		currentCourse.setDays(courseInfo[2]);
+		currentCourse.setTime(courseInfo[3]);
 		if (courseInfo.length > 4) {
 			for (int i = 4; i < courseInfo.length; i++) {
 				String temp_date = courseInfo[i];
@@ -186,32 +195,33 @@ public class Main extends Application {
 						Student currentStudent = new Student(studentInfo[0], studentInfo[1],
 								Integer.parseInt(studentInfo[2]), studentInfo[3]);
 						String[] timeStamps = studentInfo[i].split("/");
-						String delims = "[-,:,. ]+";
 
-						String[] firstTimeStamp = timeStamps[0].split(delims);
-						Long loginStamp = Long.parseLong(firstTimeStamp[0]
-								.concat(firstTimeStamp[1].concat(firstTimeStamp[2].concat(firstTimeStamp[3].concat(
-										firstTimeStamp[4].concat(firstTimeStamp[5].concat(firstTimeStamp[6])))))));
-						Timestamp loginTime = new Timestamp(loginStamp);
-
-						String[] secondTimeStamp = timeStamps[0].split(delims);
-						Long logoutStamp = Long.parseLong(secondTimeStamp[0]
-								.concat(secondTimeStamp[1].concat(secondTimeStamp[2].concat(secondTimeStamp[3].concat(
-										secondTimeStamp[4].concat(secondTimeStamp[5].concat(secondTimeStamp[6])))))));
-						Timestamp logoutTime = new Timestamp(logoutStamp);
-
-						currentStudent.setLoginTime(loginTime);
-						currentStudent.setLogoutTime(logoutTime);
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+						System.out.println(timeStamps[0]);
+						if(timeStamps[0].length() > 10) {
+							Date dateLogin = sdf.parse(timeStamps[0]);
+							Timestamp Login = new Timestamp(dateLogin.getTime());
+							currentStudent.setLoginTime(Login);
+						}
+						if(timeStamps[1].length() > 10) {
+							Date dateLogout = sdf.parse(timeStamps[1]);
+							Timestamp Logout = new Timestamp(dateLogout.getTime());
+							currentStudent.setLogoutTime(Logout);
+						}
 						currentAttendanceRecord.students.add(currentStudent);
-						currentCourse.attendanceRecords.add(currentAttendanceRecord);
+						
+						
+
 					}
+					System.out.println(currentCourse.getCourseName());
+					System.out.println(currentCourse.getAttendanceRecords().get(0).getStudents().get(1).getLoginTime());
+					System.out.println(currentCourse.getAttendanceRecords().get(0).getDate());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 			}
 
 		}
-	
 
 		for (int i = 1; i < records.size(); i++) {
 
@@ -220,7 +230,7 @@ public class Main extends Application {
 			currentCourse.students.add(newStudent);
 		}
 		showHomeScene();
-		return currentCourse;
+		
 
 	}
 
@@ -229,51 +239,65 @@ public class Main extends Application {
 		Date date = new Date();
 		dateFormat.format(date);
 		AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
+		
+		currentAttendanceRecord.students = currentCourse.students;
 
-		Student currentStudent = new Student();
+		int currentStudentId = 1;
 		System.out.println("System in Login Mode");
 		do {
-			currentStudent = parse(currentCourse);
-			if (currentStudent.getId() == 304999154) {
+			 currentStudentId = parse(currentCourse);
+			if (currentStudentId == 304999154) {
 				break;
 			}
+			
+			Student currentStudent = null;
 			Timestamp loginTime = new Timestamp(System.currentTimeMillis());
+			for(int i = 0; i < currentAttendanceRecord.students.size(); i++) {
+				if(currentAttendanceRecord.students.get(i).getId() == currentStudentId) {
+					currentStudent = currentAttendanceRecord.students.get(i);
+				}
+			}
 			currentStudent.setLoginTime(loginTime);
-			currentAttendanceRecord.students.add(currentStudent);
+			
 
-		} while (currentStudent.getId() != 304999154);
+		} while (currentStudentId != 304999154);
 
 		System.out.println("System in Standby Mode");
-		currentStudent = new Student();
+		currentStudentId = 1;
 		do {
-			currentStudent = parse(currentCourse);
-			if (currentStudent.getId() == 304999154) {
+			currentStudentId = parse(currentCourse);
+			if (currentStudentId == 304999154) {
 				break;
 			}
 			System.out.println("System in Standby Mode");
 
-		} while (currentStudent.getId() != 304999154);
+		} while (currentStudentId != 304999154);
 		System.out.println("System in Logout Mode");
-		currentStudent = new Student();
+		currentStudentId = 1;
 		do {
-			currentStudent = parse(currentCourse);
-			if (currentStudent.getId() == 304999154) {
+			 currentStudentId = parse(currentCourse);
+			if (currentStudentId == 304999154) {
 				break;
 			}
-
-			for (int i = 0; i < currentAttendanceRecord.students.size(); i++) {
-				if (currentStudent.getId() == currentAttendanceRecord.students.get(i).getId()) {
-					Timestamp logoutTime = new Timestamp(System.currentTimeMillis());
-					currentAttendanceRecord.students.get(i).setLogoutTime(logoutTime);
+			
+			Student currentStudent = null;
+			Timestamp logoutTime = new Timestamp(System.currentTimeMillis());
+			for(int i = 0; i < currentAttendanceRecord.students.size(); i++) {
+				if(currentAttendanceRecord.students.get(i).getId() == currentStudentId) {
+					currentStudent = currentAttendanceRecord.students.get(i);
 				}
 			}
-		} while (currentStudent.getId() != 304999154);
+			currentStudent.setLogoutTime(logoutTime);
+			
+
+		} while (currentStudentId != 304999154);
 
 		currentCourse.attendanceRecords.add(currentAttendanceRecord);
+		writeToFile(file);
 
 	}
 
-	public static Student parse(Course currentCourse) {
+	public static int parse(Course currentCourse) {
 
 		Administrator test = new Administrator("Name", "Mr", "Richards", "email", "richards", "ilovejose");
 		// example: student card scan
@@ -314,11 +338,11 @@ public class Main extends Application {
 
 		System.out.println("id: " + id);
 
-		return currentStudent;
+		return id;
 
 	}
 
-	public static File writeToFile(File selectedFile, Course currentCourse) {
+	public static void writeToFile(File selectedFile) {
 
 		BufferedWriter bw = null;
 		FileWriter fw = null;
@@ -326,36 +350,39 @@ public class Main extends Application {
 		try {
 			fw = new FileWriter(selectedFile);
 			bw = new BufferedWriter(fw);
-			bw.write(currentCourse.getCourseName() + "," + currentCourse.getCourseNumber() + ","
-					+ currentCourse.getDays() + "," + currentCourse.getTime());
+		
 			String courseInfo = currentCourse.getCourseName() + "," + currentCourse.getCourseNumber() + ","
 					+ currentCourse.getDays() + "," + currentCourse.getTime();
+			
+			System.out.println(currentCourse.getAttendanceRecords().size());
 			for (int i = 0; i < currentCourse.getAttendanceRecords().size(); i++) {
-				courseInfo += currentCourse.getAttendanceRecords().get(i).getDate() + ",";
+				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+				String date = df.format(currentCourse.getAttendanceRecords().get(i).getDate());
+				courseInfo += ","+ date;
+				
 			}
-			courseInfo += "\n";
+			
+			
 			bw.write(courseInfo);
+			bw.newLine();
 
-			String studentInfo = "";
+			
 			for (int i = 0; i < currentCourse.students.size(); i++) {
+				String studentInfo = "";
 				int studentId = currentCourse.students.get(i).getId();
 				studentInfo += currentCourse.students.get(i).getFirstName() + ","
 						+ currentCourse.students.get(i).getLastName() + "," + studentId + ","
-						+ currentCourse.students.get(i).getGuardianEmail();
-				if (currentCourse.getAttendanceRecords().isEmpty()) {
-					studentInfo += "\n";
-				} else
-					studentInfo += ",";
-				for (int j = 0; j < currentCourse.attendanceRecords.size(); j++) {
-					int index = currentCourse.attendanceRecords.get(j).getStudentById(studentId);
-					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(index).getLoginTime()
-							+ "//";
-					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(index).getLogoutTime()
-							+ "\n";
-
+						+ currentCourse.students.get(i).getGuardianEmail() + ",";
+				
+				for(int j = 0 ; j < currentCourse.attendanceRecords.size(); j++) {
+					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(i).getLoginTime() +"/" + currentCourse.attendanceRecords.get(j).getStudents().get(i).getLogoutTime() + ",";
 				}
+				bw.write(studentInfo);
+				bw.newLine();
 			}
-			bw.write(studentInfo);
+			
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -370,7 +397,6 @@ public class Main extends Application {
 
 		}
 
-		return selectedFile;
 	}
 
 	public static File openFile() {
@@ -471,6 +497,5 @@ public class Main extends Application {
 
 		launch(args);
 	}
-
 
 }
