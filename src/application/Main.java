@@ -208,6 +208,7 @@ public class Main extends Application {
 							Timestamp Logout = new Timestamp(dateLogout.getTime());
 							currentStudent.setLogoutTime(Logout);
 						}
+						currentStudent.setStatus();
 						currentAttendanceRecord.students.add(currentStudent);
 						
 						
