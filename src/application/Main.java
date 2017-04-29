@@ -26,6 +26,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -59,6 +60,21 @@ public class Main extends Application {
 		BorderPane courses = loader.load();
 		mainLayout.setCenter(courses);
 	}
+	
+	public static void showAddCourseStage() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/AddCourseView.fxml"));
+		BorderPane addNewCourse = loader.load();
+		Stage addDialogStage =  new Stage();
+		addDialogStage.setTitle("Add New Course");
+		addDialogStage.initModality(Modality.WINDOW_MODAL);
+		addDialogStage.initOwner(primaryStage);
+		Scene scene = new Scene(addNewCourse);
+		addDialogStage.setScene(scene);
+		addDialogStage.showAndWait();
+		
+		
+	}
 
 	public static void showHomeScene() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
@@ -72,7 +88,7 @@ public class Main extends Application {
 	
 
 	// Java Code
-	public static void createCourse() {
+	public static void createCourse(String name,  String number, String days, String time) {
 
 		// Choose a correctly formatted CSV file to upload
 
@@ -108,10 +124,7 @@ public class Main extends Application {
 		 * scanner.nextLine(); System.out.println("Enter course time: "); String
 		 * time = scanner.nextLine();
 		 */
-		String name = "SoftWareE";
-		String number = "3337";
-		String days = "MW";
-		String time = "6pm";
+		
 
 		// Crate a Course from above information
 		Course currentCourse = new Course(name, number, days, time);

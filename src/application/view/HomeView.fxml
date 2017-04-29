@@ -30,7 +30,7 @@
                      <children>
                         <ScrollPane layoutX="8.0" prefHeight="764.0" prefWidth="969.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <content>
-                              <TableView fx:id="attendanceTable" prefHeight="1000.0" prefWidth="1500.0" />
+                              <TableView fx:id="attendanceTable" prefHeight="1000.0" prefWidth="20000.0" />
                            </content>
                         </ScrollPane>
                      </children>

@@ -81,62 +81,68 @@ public class HomeViewController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	public void setAttendanceTable() {
-		List<String> columns = new ArrayList<String>();
-	    for(int i = 0; i < main.currentCourse.getAttendanceRecords().size(); i++){
-	    	columns.add(main.currentCourse.getAttendanceRecords().get(i).getDate().toString());
-	    }
-	    TableColumn [] tableColumns = new TableColumn[columns.size()];     
-	    int columnIndex = 0;
-	    for(int i=0 ; i<columns.size(); i++) {
-	        final int j = i;
-	        TableColumn col = new TableColumn(columns.get(i));
-	        col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){                   
-	           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {                                                                                             
-	                return new SimpleStringProperty(param.getValue().get(j).toString());                       
-	            }                   
-	        });
-	        attendanceTable.getColumns().addAll(col);
-	    }     
-	    
-	    ObservableList<String> row1 = FXCollections.observableArrayList();
-	    ObservableList<String> row2 = FXCollections.observableArrayList();
-	    ObservableList<String> row3 = FXCollections.observableArrayList();
-	    ObservableList<String> row4 = FXCollections.observableArrayList();
-	   
-	    for(int i = 0; i <4; i++){
-	    	ObservableList<String> row = FXCollections.observableArrayList();
-	    	for(int j = 0; j < 5; j++){
-	    		String x = ""; 
-	    		x = main.currentCourse.getAttendanceRecords().get(j).getStudents().get(i).getStatus();
-	    			
-	    		row.add(x);
-	    	}
-	    	attendanceTable.getItems().add(row);
-	    }
-
-	    
-	    
-
-	
-	
-		/*for (int i = 0; i < main.currentCourse.students.size(); i++) {
-			ObservableList<ArrayList<AttendanceRecord>> day = FXCollections.observableArrayList();
-
-			for (int j = 0; j < main.currentCourse.attendanceRecords.size(); j++) {
-
-				//day.add(main.currentCourse.attendanceRecords.get(j).getStudents().get(i).getLoginTime() + "/"
-				//		+ main.currentCourse.attendanceRecords.get(j).getStudents().get(i).getLogoutTime());
-				main.currentCourse.students.get(i).attendanceRecords.add(main.currentCourse.attendanceRecords.get(j));
-				
-				
-				System.out.println();
+		if (main.currentCourse.attendanceRecords.size() > 0) {
+			List<String> columns = new ArrayList<String>();
+			for (int i = 0; i < main.currentCourse.getAttendanceRecords().size(); i++) {
+				columns.add(main.currentCourse.getAttendanceRecords().get(i).getDate().toString());
 			}
-			day.add(main.currentCourse.students.get(i).attendanceRecords);
+			TableColumn[] tableColumns = new TableColumn[columns.size()];
+			int columnIndex = 0;
+			for (int i = 0; i < columns.size(); i++) {
+				final int j = i;
+				TableColumn col = new TableColumn(columns.get(i));
+				col.setCellValueFactory(
+						new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+							public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+								return new SimpleStringProperty(param.getValue().get(j).toString());
+							}
+						});
+				attendanceTable.getColumns().addAll(col);
+			}
 
-			data.add(day);
+			ObservableList<String> row1 = FXCollections.observableArrayList();
+			ObservableList<String> row2 = FXCollections.observableArrayList();
+			ObservableList<String> row3 = FXCollections.observableArrayList();
+			ObservableList<String> row4 = FXCollections.observableArrayList();
+
+			for (int i = 0; i < 4; i++) {
+				ObservableList<String> row = FXCollections.observableArrayList();
+				for (int j = 0; j < 5; j++) {
+					String x = "";
+					x = main.currentCourse.getAttendanceRecords().get(j).getStudents().get(i).getStatus();
+
+					row.add(x);
+					if (main.currentCourse.getAttendanceRecords().get(j).getStudents().get(i).getStatus()
+							.equals("absent")) {
+
+					}
+				}
+				attendanceTable.getItems().add(row);
+			}
 		}
-		*/
-		//attendanceTable.setItems(data);;
+
+		/*
+		 * for (int i = 0; i < main.currentCourse.students.size(); i++) {
+		 * ObservableList<ArrayList<AttendanceRecord>> day =
+		 * FXCollections.observableArrayList();
+		 * 
+		 * for (int j = 0; j < main.currentCourse.attendanceRecords.size(); j++)
+		 * {
+		 * 
+		 * //day.add(main.currentCourse.attendanceRecords.get(j).getStudents().
+		 * get(i).getLoginTime() + "/" // +
+		 * main.currentCourse.attendanceRecords.get(j).getStudents().get(i).
+		 * getLogoutTime());
+		 * main.currentCourse.students.get(i).attendanceRecords.add(main.
+		 * currentCourse.attendanceRecords.get(j));
+		 * 
+		 * 
+		 * System.out.println(); }
+		 * day.add(main.currentCourse.students.get(i).attendanceRecords);
+		 * 
+		 * data.add(day); }
+		 */
+		// attendanceTable.setItems(data);;
 
 	}
 

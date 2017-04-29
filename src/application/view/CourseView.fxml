@@ -24,12 +24,12 @@
                 <RowConstraints maxHeight="590.0" minHeight="10.0" prefHeight="219.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#createCourse" prefHeight="96.0" prefWidth="154.0" text="Create Course">
+                  <Button mnemonicParsing="false" onAction="#showAddCourseStageBt" prefHeight="96.0" prefWidth="154.0" text="Create Course">
                      <GridPane.margin>
                         <Insets left="100.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#loadCourse" prefHeight="92.0" prefWidth="156.0" text="Load Course" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#loadCourseBt" prefHeight="92.0" prefWidth="156.0" text="Load Course" GridPane.columnIndex="1" />
                </children>
                <BorderPane.margin>
                   <Insets />
