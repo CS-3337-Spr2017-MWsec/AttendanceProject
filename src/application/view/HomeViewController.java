@@ -26,6 +26,11 @@ public class HomeViewController {
 	private TableView attendanceTable;
 
 	private Main main;
+	
+	@FXML
+	private void addStudentBt() {
+		
+	}
 
 	@FXML
 	private void takeAttendanceScreen() {

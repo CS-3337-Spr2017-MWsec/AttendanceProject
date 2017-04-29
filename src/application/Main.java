@@ -64,12 +64,27 @@ public class Main extends Application {
 	public static void showAddCourseStage() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/AddCourseView.fxml"));
-		BorderPane addNewCourse = loader.load();
+		BorderPane addNewCourseBp = loader.load();
 		Stage addDialogStage =  new Stage();
 		addDialogStage.setTitle("Add New Course");
 		addDialogStage.initModality(Modality.WINDOW_MODAL);
 		addDialogStage.initOwner(primaryStage);
-		Scene scene = new Scene(addNewCourse);
+		Scene scene = new Scene(addNewCourseBp);
+		addDialogStage.setScene(scene);
+		addDialogStage.showAndWait();
+		
+		
+	}
+	
+	public static void showAddStudentStage() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/AddStudentView.fxml"));
+		BorderPane addNewStudentBp = loader.load();
+		Stage addDialogStage =  new Stage();
+		addDialogStage.setTitle("Add New Student");
+		addDialogStage.initModality(Modality.WINDOW_MODAL);
+		addDialogStage.initOwner(primaryStage);
+		Scene scene = new Scene(addNewStudentBp);
 		addDialogStage.setScene(scene);
 		addDialogStage.showAndWait();
 		

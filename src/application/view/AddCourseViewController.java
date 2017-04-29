@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 public class AddCourseViewController {
 	private Main main;
 	
-	@FXML void createCourseBt() {
+	@FXML void createCourseConfirmBt() {
 		/*	create a form in AddCourseView.fxml using labels and textfields
 			get information from the textfields from AddCourseView.fxml
 			String name = 
