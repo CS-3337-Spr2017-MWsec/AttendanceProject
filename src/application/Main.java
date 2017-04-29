@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	private static Stage primaryStage;
+	private static Stage primaryStage; 
 	private static BorderPane mainLayout;
 	public static File file = null;
 	public static Course currentCourse = new Course();

@@ -1,91 +1,89 @@
 package application.view;
 
-
-
-
+import java.util.ArrayList;
 
 import application.Main;
 import application.classes.Course;
+import application.classes.Student;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-public class HomeViewController {
+public class HomeViewController{
 	
 	@FXML
-	private TextFlow roster;
-	
+	private TableView studentTable;
+
 	@FXML
-	private TextFlow dates;
-	
+	private TableView attendanceTable;
+
 	private Main main;
-	
+
 	@FXML
 	private void takeAttendanceScreen() {
 		Course course = main.currentCourse;
 		System.out.println(course.getStudents().get(0).getFirstName());
 		main.takeAttendance(main.currentCourse);
-		
-	}
-	public static String fillString(int count, String s) {
-	   
-	    for( int i=0; i<count; i++ ) {
-	      if(s.length() < count)
-	    	s += (" "); 
-	    }
-	    return s;
-	}
-	@FXML
-	private void setTable() {
-		String courseInfo = main.currentCourse.getCourseName() + " " + main.currentCourse.getCourseNumber() + " "
-				+ main.currentCourse.getDays() + " " + main.currentCourse.getTime() + "\n";
-		
-		String studentInfo = "";
-		
-		String fHeader = fillString(25, "First Name");
-		System.out.println(fHeader.length());
-		
-		String lHeader = fillString(25, "Last Name");
-		
-	
-		String idHeader = fillString(25, "Id Number");
-		
-		String emailHeader = fillString(30, "Guardian Email");
-		studentInfo += fHeader + lHeader + idHeader + emailHeader + "\n";
-		
-		String dateInfo = "";
-		
-		for (int i = 0; i < main.currentCourse.students.size(); i++) {
-			
-			int studentId = main.currentCourse.students.get(i).getId();
-			String firstName = fillString(25, main.currentCourse.students.get(i).getFirstName());
-			System.out.println(firstName.length());
-			String lastName = fillString(25, main.currentCourse.students.get(i).getLastName());
-			String email = fillString(30, main.currentCourse.students.get(i).getGuardianEmail());
-			String id = fillString(25, Integer.toString(studentId));
-			studentInfo += firstName + lastName + id + email;
-			studentInfo += "\n";
-			
-			for(int j = 0 ; j < main.currentCourse.attendanceRecords.size(); j++) {
-				String oneDay = main.currentCourse.attendanceRecords.get(j).getStudents().get(i).getLoginTime() +"/" + main.currentCourse.attendanceRecords.get(j).getStudents().get(i).getLogoutTime() + fillString(50, " ");
-				dateInfo += oneDay;
-			}
-			
-		}
-		
-		
 
+	}
+	
+	@FXML
+	public void initialize(){
+		setStudentTable();
+		setAttendanceTable();
+	}
+
+	public static String fillString(int n, String s) {
+		return String.format("%1$-" + n + "s", s);
+	}
+
+	@FXML
+	public void setStudentTable() {
+		TableColumn firstNameCol = new TableColumn("First Name");
+		firstNameCol.setCellValueFactory(new PropertyValueFactory<Student,String>("firstName"));
+		firstNameCol.setPrefWidth(120);
 		
+		TableColumn lastNameCol = new TableColumn("Last Name");
+		lastNameCol.setCellValueFactory(new PropertyValueFactory<Student, String>("lastName"));
+		lastNameCol.setPrefWidth(120);
 		
+		TableColumn idCol= new TableColumn("CIN");
+		idCol.setCellValueFactory(new PropertyValueFactory<Student, Integer>("id"));
+		idCol.setPrefWidth(120);
 		
-		Text rosterText = new Text(studentInfo);
-		Text dateText = new Text(dateInfo);
+		TableColumn emailCol = new TableColumn("Guardian Email");
+		emailCol.setCellValueFactory(new PropertyValueFactory<Student, String>("guardianEmail"));
+		emailCol.setPrefWidth(150);
 		
-	 	roster.getChildren().add(rosterText);
-	 	dates.getChildren().add(dateText);
-		
+		studentTable.getColumns().addAll(firstNameCol, lastNameCol, idCol, emailCol);
+	
+		ObservableList<Student> data = FXCollections.observableArrayList();
+
+		for(Student student : main.currentCourse.students){
+			data.add(student);
+		}
+		studentTable.setItems(data);
+
+	}
+	
+	@FXML
+	public void setAttendanceTable(){
+		for(int i = 0; i < main.currentCourse.attendanceRecords.size(); i++) {
+			
+			String dateString = main.currentCourse.attendanceRecords.get(i).getDate() + "";
+			TableColumn date = new TableColumn(dateString);
+			date.setCellValueFactory(new PropertyValueFactory<ArrayList, String>("i"));
+			date.setPrefWidth(250);
+			attendanceTable.getColumns().add(date);
+			attendanceTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+		}
+	
 		
 		
 	}
-	 
+		
 }
