@@ -76,8 +76,15 @@ public class Student {
 		this.logoutTime = logoutTime;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setStatus() {
+		
+		if(this.getLoginTime() == null && this.getLogoutTime() == null){
+			this.status = "absent";
+		}else if(this.getLoginTime()==null && this.getLogoutTime() !=null)
+			this.status="tardy";
+		else {
+			this.status = "present";
+		}
 	}
 
 	
