@@ -76,6 +76,21 @@ public class Main extends Application {
 		
 	}
 	
+	public static void showEditStudentStage() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/EditView.fxml"));
+		BorderPane editStudentBp = loader.load();
+		Stage addDialogStage =  new Stage();
+		addDialogStage.setTitle("Edit Student");
+		addDialogStage.initModality(Modality.WINDOW_MODAL);
+		addDialogStage.initOwner(primaryStage);
+		Scene scene = new Scene(editStudentBp);
+		addDialogStage.setScene(scene);
+		addDialogStage.showAndWait();
+		
+		
+	}
+	
 	public static void showAddStudentStage() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/AddStudentView.fxml"));
@@ -461,56 +476,42 @@ public class Main extends Application {
 		return -1;
 	}
 
-	public static void edit(int id, Course currentCourse) {
+	public static void edit(Course currentCourse, int id,Date d,String action) {
 		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
-		AttendanceRecord last = temp.get(temp.size()-1);
-		ArrayList<Student> studentlist = last.getStudents();
-		int numOfStudents = studentlist.size();
-		search(id,currentCourse);
 		
-		System.out.println("How many days would you like to go back?");
-		Scanner sc = new Scanner(System.in);
-		int i = sc.nextInt();
-
-		    //Grab the Student list for the requested day
-		    ArrayList<Student> currentARStudentList = temp.get(temp.size()-1-i*(numOfStudents+1)).getStudents();
-
-		    //Iterate through students and change login and log out times when the student is found
-		    for(Student a:currentARStudentList) 
-			if(a.getId()==id) {
-
-			//Absent to present
-			if(a.getLoginTime()==null && a.getLogoutTime()==null) {
-				Scanner input = new Scanner(System.in);
-				System.out.println("Name: " +a.getFirstName() + " " + a.getLastName()); 
-				System.out.println("Log in time: " + a.getLoginTime());
-				System.out.println("Log out time: "+ a.getLogoutTime());
-				System.out.println("Would you like to make this student present? Y/N ");
-				String scinput = input.nextLine();
-				if(scinput.toUpperCase()=="Y") {
-					//Trick the system into logging in and logging out without the need for user input Timestamps
-					Timestamp tempLogin = new Timestamp(System.currentTimeMillis());
-					a.setLoginTime(tempLogin);
-					Timestamp tempLogout = new Timestamp(System.currentTimeMillis());
-					a.setLogoutTime(tempLogout);
-					System.out.println("Student has been marked present");
-				}
+		for(AttendanceRecord a:temp) 
+			if(a.getDate().equals(d)) {
+				ArrayList<Student> slist = a.getStudents();
+				for(Student b:slist) 
+					if(b.getId()==id){
+						System.out.println("Before edit");
+						System.out.println("Login time:"+b.getLoginTime()+ ". Logout time:"+b.getLogoutTime());
+						takeAction(b, action);
+						System.out.println("After edit");
+						System.out.println("Login time:"+b.getLoginTime()+ ". Logout time:"+b.getLogoutTime());
+					}
+			}		
+	}
+	
+	private static void takeAction(Student s, String action){
+		switch(action){
+			case "Mark Present":{
+				Timestamp login = new Timestamp(System.currentTimeMillis());
+				Timestamp logout = new Timestamp(System.currentTimeMillis());
+				s.setLoginTime(login);
+				s.setLogoutTime(logout);
+				break;
 			}
-
-			//Present to absent
-			if(a.getLoginTime()!=null || a.getLogoutTime()!=null) {
-				Scanner input = new Scanner(System.in);
-				System.out.println("Name: " +a.getFirstName() + " " + a.getLastName()); 
-				System.out.println("Log in time: " + a.getLoginTime());
-				System.out.println("Log out time: "+ a.getLogoutTime());
-				System.out.println("Would you like to make this student absent? Y/N ");
-				String scinput = input.nextLine();
-				if(scinput.toUpperCase()=="Y") {
-					a.setLoginTime(null);
-					a.setLogoutTime(null);
-					System.out.println("Student has been marked absent");
-
-				}
+			case "Mark Absent":{
+				s.setLoginTime(null);
+				s.setLogoutTime(null);
+				break;
+			}
+			case "Mark Tardy":{
+				Timestamp logout = new Timestamp(System.currentTimeMillis());
+				s.setLogoutTime(logout);
+				s.setLoginTime(null);
+				break;
 			}
 		}
 	}
