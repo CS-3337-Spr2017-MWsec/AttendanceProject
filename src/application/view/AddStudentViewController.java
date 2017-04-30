@@ -39,6 +39,9 @@ public class AddStudentViewController {
 		else {
 			Student student = new Student(firstName.getText(),lastName.getText(),Integer.parseInt(CIN.getText()),email.getText());
 			main.currentCourse.students.add(student);
+			ArrayList<AttendanceRecord> ar = main.currentCourse.getAttendanceRecords();
+			for(AttendanceRecord z:ar)
+				z.students.add(student);
 			Alert alert = new Alert(AlertType.INFORMATION, "Student added into " + main.currentCourse.getCourseName() + " " + main.currentCourse.getCourseNumber());
 			alert.show();
 			main.showHomeScene();
