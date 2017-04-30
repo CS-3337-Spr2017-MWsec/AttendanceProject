@@ -39,8 +39,17 @@ public class AddStudentViewController {
 		else {
 			Student student = new Student(firstName.getText(),lastName.getText(),Integer.parseInt(CIN.getText()),email.getText());
 			main.currentCourse.students.add(student);
+			Alert alert = new Alert(AlertType.INFORMATION, "Student added into " + main.currentCourse.getCourseName() + " " + main.currentCourse.getCourseNumber());
+			alert.show();
 			main.showHomeScene();
-			
+			clearText();
 		}
+	}
+	
+	public void clearText(){
+		firstName.clear();
+		lastName.clear();
+		CIN.clear();
+		email.clear();
 	}
 }
