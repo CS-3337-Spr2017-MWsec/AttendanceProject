@@ -1,4 +1,5 @@
 package application.view;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,11 @@ public class HomeViewController {
 	@FXML
 	private void addStudentBt() throws IOException {
 	main.showAddStudentStage();
+	}
+	
+	@FXML
+	private void editBt() throws IOException {
+		main.showEditStudentStage();
 	}
 
 	@FXML
