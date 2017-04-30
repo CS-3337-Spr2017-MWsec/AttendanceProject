@@ -8,6 +8,7 @@ import application.Main;
 import application.classes.Course;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 public class AddCourseViewController {
 	private Main main;
@@ -20,14 +21,16 @@ public class AddCourseViewController {
 	TextField days;
 	@FXML
 	TextField time;
+	@FXML
+	Text error;
 
 	@FXML
 	void createCourseConfirmBt() throws FileNotFoundException {
-
-		main.createCourse(name.getText(), number.getText(), days.getText(), time.getText());
+		if (name.getText().equals("")) {
+			error.setVisible(true);
+		} else {
+			main.createCourse(name.getText(), number.getText(), days.getText(), time.getText());
+		}
 	}
 
-	
-	
-	
 }
