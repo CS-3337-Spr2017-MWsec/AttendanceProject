@@ -493,24 +493,30 @@ public class Main extends Application {
 			}		
 	}
 	
-	private static void takeAction(Student s, String action){
+	private static void takeAction(Student s,Date d,String action){
 		switch(action){
 			case "Mark Present":{
 				Timestamp login = new Timestamp(System.currentTimeMillis());
 				Timestamp logout = new Timestamp(System.currentTimeMillis());
 				s.setLoginTime(login);
 				s.setLogoutTime(logout);
+				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked present on "+d.toString());
+				alert.show();
 				break;
 			}
 			case "Mark Absent":{
 				s.setLoginTime(null);
 				s.setLogoutTime(null);
+				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked absent on "+d.toString());
+				alert.show();
 				break;
 			}
 			case "Mark Tardy":{
 				Timestamp logout = new Timestamp(System.currentTimeMillis());
 				s.setLogoutTime(logout);
 				s.setLoginTime(null);
+				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked tardy on "+d.toString());
+				alert.show();
 				break;
 			}
 		}
