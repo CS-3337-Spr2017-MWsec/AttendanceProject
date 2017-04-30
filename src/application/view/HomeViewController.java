@@ -39,10 +39,8 @@ public class HomeViewController {
 	}
 
 	@FXML
-	private void takeAttendanceScreen() {
-		Course course = main.currentCourse;
-		System.out.println(course.getStudents().get(0).getFirstName());
-		main.takeAttendance(main.currentCourse);
+	private void takeAttendanceScreen() throws IOException {
+		main.showAttendanceStage();
 
 	}
 
