@@ -24,6 +24,8 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -486,7 +488,7 @@ public class Main extends Application {
 					if(b.getId()==id){
 						System.out.println("Before edit");
 						System.out.println("Login time:"+b.getLoginTime()+ ". Logout time:"+b.getLogoutTime());
-						takeAction(b, action);
+						takeAction(b,d,action);
 						System.out.println("After edit");
 						System.out.println("Login time:"+b.getLoginTime()+ ". Logout time:"+b.getLogoutTime());
 					}
