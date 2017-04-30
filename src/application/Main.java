@@ -514,6 +514,7 @@ public class Main extends Application {
 				Timestamp logout = new Timestamp(System.currentTimeMillis());
 				s.setLoginTime(login);
 				s.setLogoutTime(logout);
+				s.setStatus();
 				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked present on "+d.toString());
 				alert.show();
 				break;
@@ -521,6 +522,7 @@ public class Main extends Application {
 			case "Mark Absent":{
 				s.setLoginTime(null);
 				s.setLogoutTime(null);
+				s.setStatus();
 				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked absent on "+d.toString());
 				alert.show();
 				break;
@@ -529,6 +531,7 @@ public class Main extends Application {
 				Timestamp logout = new Timestamp(System.currentTimeMillis());
 				s.setLogoutTime(logout);
 				s.setLoginTime(null);
+				s.setStatus();
 				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked tardy on "+d.toString());
 				alert.show();
 				break;
