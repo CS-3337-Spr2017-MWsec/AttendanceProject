@@ -28,8 +28,8 @@ public class HomeViewController {
 	private Main main;
 	
 	@FXML
-	private void addStudentBt() {
-		
+	private void addStudentBt() throws IOException {
+	main.showAddStudentStage();
 	}
 
 	@FXML
