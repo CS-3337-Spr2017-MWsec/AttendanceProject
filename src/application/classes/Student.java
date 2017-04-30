@@ -77,10 +77,12 @@ public class Student {
 
 	public void setStatus() {
 		
-		if(this.getLoginTime() == null || this.getLogoutTime() == null){
-			this.status = "absent";
-		}else {
+		if(this.getLoginTime() != null && this.getLogoutTime() != null){
 			this.status = "present";
+		}else if(this.getLoginTime() == null && this.getLogoutTime() != null) {
+			this.status = "late";
+		}else{
+			this.status = "absent";
 		}
 	}
 	

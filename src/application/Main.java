@@ -89,8 +89,20 @@ public class Main extends Application {
 		Scene scene = new Scene(editStudentBp);
 		addDialogStage.setScene(scene);
 		addDialogStage.showAndWait();
-		
-		
+	}
+	
+	public static void showAttendanceStage() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/TakeAttendanceView.fxml"));
+		BorderPane showAttendanceBp = loader.load();
+		Stage addDialogStage =  new Stage();
+		addDialogStage.setTitle("Attendance Roll Call");
+		addDialogStage.initModality(Modality.WINDOW_MODAL);
+		addDialogStage.initOwner(primaryStage);
+		Scene scene = new Scene(showAttendanceBp);
+		addDialogStage.setScene(scene);
+		addDialogStage.showAndWait();
+	
 	}
 	
 	public static void showAddStudentStage() throws IOException {

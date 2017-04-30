@@ -110,12 +110,6 @@ public class HomeViewController {
 						});
 				attendanceTable.getColumns().addAll(col);
 			}
-
-			ObservableList<String> row1 = FXCollections.observableArrayList();
-			ObservableList<String> row2 = FXCollections.observableArrayList();
-			ObservableList<String> row3 = FXCollections.observableArrayList();
-			ObservableList<String> row4 = FXCollections.observableArrayList();
-
 			for (int i = 0; i < 4; i++) {
 				ObservableList<String> row = FXCollections.observableArrayList();
 				for (int j = 0; j < 5; j++) {
