@@ -30,10 +30,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField maxWidth="300.0" prefHeight="31.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField id="number" fx:id="number" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField id="days" fx:id="days" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField id="time" fx:id="time" maxWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField id="name" fx:id="name" maxWidth="300.0" prefHeight="31.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Course Name:" textAlignment="CENTER" wrappingWidth="389.6708984375" GridPane.rowIndex="1">
                <font>
                   <Font size="30.0" />
