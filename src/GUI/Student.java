@@ -1,7 +1,5 @@
-package application.classes;
-
+package GUI;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 public class Student {
 	
@@ -9,10 +7,9 @@ public class Student {
 	private String lastName;
 	private String guardianEmail;
 	private int id;
-	private String status;
+	private boolean status;
 	private Timestamp loginTime;
 	private Timestamp logoutTime;
-	public ArrayList<AttendanceRecord> attendanceRecords = new ArrayList<>();
 	
 	public Student(){
 		
@@ -59,6 +56,10 @@ public class Student {
 		this.id = id;
 	}
 
+	public boolean isStatus() {
+		return status;
+	}
+
 	public Timestamp getLoginTime() {
 		return loginTime;
 	}
@@ -75,30 +76,12 @@ public class Student {
 		this.logoutTime = logoutTime;
 	}
 
-	public void setStatus() {
-		
-		if(this.getLoginTime() == null && this.getLogoutTime() == null){
-			this.status = "absent";
-		}else if(this.getLoginTime()==null && this.getLogoutTime() !=null)
-			this.status="tardy";
-		else {
-			this.status = "present";
-		}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
-	
-	public String getStatus() {
-		return this.status;
-	}
-	
-	public Student getStudentById(int id) {
-		if(id == this.id) {
-			return this;
-		}
-		return null;
-		
-	}
-	
 
+	
+	
 	
 	
 	
