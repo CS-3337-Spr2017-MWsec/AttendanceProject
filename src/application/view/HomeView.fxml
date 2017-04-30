@@ -51,7 +51,7 @@
          <children>
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Search" />
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Edit" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Add Student" />
+            <Button mnemonicParsing="false" onAction="#addStudentBt" prefHeight="25.0" prefWidth="121.0" text="Add Student" />
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Remove Student" />
             <Button mnemonicParsing="false" onAction="#takeAttendanceScreen" prefHeight="25.0" prefWidth="121.0" text="Take Attendance" />
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Email" />
