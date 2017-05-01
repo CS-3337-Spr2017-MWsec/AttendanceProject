@@ -130,6 +130,22 @@ public class Main extends Application {
 	}
 	
 	
+		public static void showSearchView() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/searchView.fxml"));
+		BorderPane s = loader.load();
+		Stage stage = new Stage();
+
+		stage.setTitle("Search");
+		stage.initModality(Modality.WINDOW_MODAL);
+		stage.initOwner(primaryStage);
+
+		Scene scene = new Scene(s);
+		stage.setScene(scene);
+		stage.showAndWait();
+		////
+	}
+	
 
 	// Java Code
 	public static void createCourse(String name,  String number, String days, String time) {
