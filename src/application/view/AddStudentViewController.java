@@ -43,10 +43,12 @@ public class AddStudentViewController {
 			for(AttendanceRecord z:ar)
 				z.students.add(student);
 			Alert alert = new Alert(AlertType.INFORMATION, "Student added into " + main.currentCourse.getCourseName() + " " + main.currentCourse.getCourseNumber());
+			student.setStatus();
 			alert.show();
 			clearText();
 		}
-		//main.showHomeScene();
+	
+		main.showHomeScene();
 
 	}
 	
