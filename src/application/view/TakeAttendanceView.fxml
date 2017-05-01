@@ -31,7 +31,7 @@
                         <Label prefHeight="35.0" prefWidth="96.0" text="First Name:" />
                         <Label prefHeight="35.0" prefWidth="96.0" text="Last Name:" />
                         <Label prefHeight="35.0" prefWidth="96.0" text="ID Number:" />
-                        <Label prefHeight="35.0" prefWidth="96.0" text="Satus" />
+                        <Label prefHeight="35.0" prefWidth="96.0" text="Status" />
                      </children>
                   </VBox>
                   <VBox prefHeight="475.0" prefWidth="113.0">
@@ -46,7 +46,7 @@
             </HBox>
          </top>
          <center>
-            <TextField fx:id="scan" prefHeight="58.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+            <TextField fx:id="scanTf" onAction="#takeAttendanceBt" prefHeight="58.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>

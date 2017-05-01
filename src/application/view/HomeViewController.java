@@ -108,17 +108,14 @@ public class HomeViewController {
 						});
 				attendanceTable.getColumns().addAll(col);
 			}
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < main.currentCourse.students.size(); i++) {
 				ObservableList<String> row = FXCollections.observableArrayList();
-				for (int j = 0; j < 5; j++) {
+				for (int j = 0; j < main.currentCourse.getAttendanceRecords().size(); j++) {
 					String x = "";
 					x = main.currentCourse.getAttendanceRecords().get(j).getStudents().get(i).getStatus();
 
 					row.add(x);
-					if (main.currentCourse.getAttendanceRecords().get(j).getStudents().get(i).getStatus()
-							.equals("absent")) {
-
-					}
+				
 				}
 				attendanceTable.getItems().add(row);
 			}

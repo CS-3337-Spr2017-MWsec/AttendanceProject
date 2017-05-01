@@ -1,7 +1,7 @@
 package application.view;
 
 
-import java.awt.TextField;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,13 +17,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class TakeAttendanceViewController {
 	
 	private static Main main;
 	
 	@FXML
-	private static TextField scan;
+	private TextField scanTf;
 	
 	@FXML
 	private Label mode;
@@ -38,7 +39,7 @@ public class TakeAttendanceViewController {
 	private Label id;
 	
 	@FXML
-	private static Label status;
+	private Label status;
 	
 	@FXML
 	public void initialize() {
@@ -54,6 +55,13 @@ public class TakeAttendanceViewController {
 	@FXML void takeAttendanceBt(){
 		takeAttendance(main.currentCourse);
 	}
+	
+	StringProperty modeSp = new SimpleStringProperty("");
+	StringProperty firstNameSp = new SimpleStringProperty("");
+	StringProperty lastNameSp = new SimpleStringProperty("");
+	StringProperty idSp = new SimpleStringProperty("");
+	static StringProperty statusSp = new SimpleStringProperty("");
+	
 	
 	@FXML
 	public void takeAttendance(Course currentCourse) {
@@ -89,19 +97,19 @@ public class TakeAttendanceViewController {
 			if (currentStudentId == 304999154) {
 				break;
 			}
-			
+			System.out.println(currentStudentId);
 			Student currentStudent = null;
 			Timestamp loginTime = new Timestamp(System.currentTimeMillis());
 			for(int i = 0; i < currentAttendanceRecord.students.size(); i++) {
 				if(currentAttendanceRecord.students.get(i).getId() == currentStudentId) {
 					currentStudent = currentAttendanceRecord.students.get(i);
 				}
+				firstNameSp.setValue(currentStudent.getFirstName());
+				lastNameSp.setValue(currentStudent.getLastName());
+				idSp.setValue(Integer.toString(currentStudent.getId()));
+				statusSp.setValue("You are logged in");
 			}
 			
-			firstNameSp.setValue(currentStudent.getFirstName());
-			lastNameSp.setValue(currentStudent.getLastName());
-			idSp.setValue(Integer.toString(currentStudent.getId()));
-			statusSp.setValue("You are logged in");
 			
 			currentStudent.setLoginTime(loginTime);
 			
@@ -148,18 +156,18 @@ public class TakeAttendanceViewController {
 
 	}
 	
-	public static int parse(Course currentCourse) {
+	public  int parse(Course currentCourse) {
 
 		Administrator test = new Administrator("Name", "Mr", "Richards", "email", "richards", "ilovejose");
 		// example: student card scan
 		String student = "";
+		student = scanTf.getText();
 		do {
-			System.out.println("scan now");
-			Scanner scanner = new Scanner(System.in);
-			student = scan.getText();
+			if(scanTf.getText().length() > 95)
+			student = scanTf.getText();
 
 			if (student.length() < 95) {
-				status.setText("Scan Failed");
+				statusSp.setValue("Scan Failed");
 			}
 
 		} while (student.length() < 95);
