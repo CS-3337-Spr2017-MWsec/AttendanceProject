@@ -34,6 +34,12 @@ public class HomeViewController {
 	}
 	
 	@FXML
+	private void emailBT() throws IOException {
+		main.messaging();
+	}
+	
+	
+	@FXML
 	private void addStudentBt() throws IOException {
 	main.showAddStudentStage();
 	}
