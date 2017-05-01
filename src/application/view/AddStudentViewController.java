@@ -44,9 +44,9 @@ public class AddStudentViewController {
 				z.students.add(student);
 			Alert alert = new Alert(AlertType.INFORMATION, "Student added into " + main.currentCourse.getCourseName() + " " + main.currentCourse.getCourseNumber());
 			alert.show();
-			main.showHomeScene();
 			clearText();
 		}
+		main.showHomeScene();
 	}
 	
 	public void clearText(){

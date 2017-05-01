@@ -81,7 +81,8 @@ public class TakeAttendanceViewController {
 		AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
 		
 		currentAttendanceRecord.students = currentCourse.students;
-		
+		System.out.println(currentCourse.students.size());
+		System.out.println(currentAttendanceRecord.students.size());
 		int currentStudentId = 1;
 		
 	
@@ -91,7 +92,7 @@ public class TakeAttendanceViewController {
 			if (currentStudentId == 304999154) {
 				break;
 			}
-			System.out.println(currentStudentId);
+			System.out.println("id:" + currentStudentId);
 			Student currentStudent = null;
 			Timestamp loginTime = new Timestamp(System.currentTimeMillis());
 			System.out.print("array size" + currentAttendanceRecord.students.size());
@@ -104,12 +105,16 @@ public class TakeAttendanceViewController {
 			
 			firstNameSp.setValue(currentStudent.getFirstName());
 			lastNameSp.setValue(currentStudent.getLastName());
-			idSp.setValue(Integer.toString(currentStudent.getId()));
+			idSp.setValue(Integer.toString
+					(currentStudent.getId()));
 			statusSp.setValue("Logged In");
 			currentStudent.setLoginTime(loginTime);
 			System.out.println(currentStudent.getLoginTime());
+			
+			
 			scanTf.clear();
-			scanTf.wait();
+			
+			
 
 		} while (currentStudentId != 304999154);
 
