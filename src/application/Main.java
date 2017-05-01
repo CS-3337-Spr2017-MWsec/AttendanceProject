@@ -20,10 +20,7 @@ import application.classes.Administrator;
 import application.classes.AttendanceRecord;
 import application.classes.Course;
 import application.classes.Student;
-import application.view.TakeAttendanceViewController;
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -35,7 +32,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	
+
 	private static Stage primaryStage; 
 	private static BorderPane mainLayout;
 	public static File file = null;
@@ -131,21 +128,7 @@ public class Main extends Application {
 
 
 	}
-	public static void showSearchView() throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("view/searchView.fxml"));
-		BorderPane s = loader.load();
-		Stage stage = new Stage();
-
-		stage.setTitle("Search");
-		stage.initModality(Modality.WINDOW_MODAL);
-		stage.initOwner(primaryStage);
-
-		Scene scene = new Scene(s);
-		stage.setScene(scene);
-		stage.showAndWait();
-		////
-	}
+	
 	
 		public static void showSearchView() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
@@ -311,7 +294,6 @@ public class Main extends Application {
 					e.printStackTrace();
 				}
 			}
-			
 
 		}
 
@@ -333,16 +315,9 @@ public class Main extends Application {
 		AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
 		
 		currentAttendanceRecord.students = currentCourse.students;
-		
-		StringProperty modeSp = new SimpleStringProperty("");
-		StringProperty firstNameSp = new SimpleStringProperty("");
-		StringProperty lastNameSp = new SimpleStringProperty("");
-		StringProperty idSp = new SimpleStringProperty("");
-		StringProperty statusSp = new SimpleStringProperty("");	
-		
-		
-		int currentStudentId = 1;
 
+		int currentStudentId = 1;
+		System.out.println("System in Login Mode");
 		do {
 			 currentStudentId = parse(currentCourse);
 			if (currentStudentId == 304999154) {
@@ -532,8 +507,6 @@ public class Main extends Application {
 
 		return -1;
 	}
-	
-	
 
 	public static void edit(Course currentCourse, int id,Date d,String action) {
 		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
@@ -585,63 +558,7 @@ public class Main extends Application {
 	}
 	
 	
-<<<<<<< HEAD
-=======
-	public static void messaging(){
-		
-		System.out.println("message running");
-		String adminEmail = "moloch714@gmail.com";
-		String adminPassword = "Barce@714";
-
-		String subject = "Attendance Alert";
-
-
-		Properties props = new Properties();
-
-		props.put("mail.smtp.host", "smtp.gmail.com");	
-		props.put("mail.smtp.port", "587"); 
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		
-		Session session = Session.getDefaultInstance(props,new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(adminEmail, adminPassword);}
-	});
-
-		for (int i = 0; i < currentCourse.students.size(); i++) {
-			String firstName = currentCourse.students.get(i).getFirstName();
-			String lastName = currentCourse.students.get(i).getLastName();
-			String guardianEmail = currentCourse.students.get(i).getGuardianEmail();
-			String message = firstName + " " + lastName + " missed class today.";
-
-				try {
-					Message msg = new MimeMessage(session); // create message object
-					System.out.println("try running");
-					msg.setFrom(new InternetAddress(adminEmail)); // send from
-					msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(guardianEmail)); //send to
-					msg.setSubject(subject); // send default subject
-					msg.setText(message); // send body message
-
-					Transport.send(msg); // send message object
-
-					System.out.println("email successfully sent");
-					} catch (MessagingException e) {
-						System.out.println("alert: error");
-
-						throw new RuntimeException(e);}
-				}
-			} // end of for loop
-		
-		 // end of messaging()
-
-	/*for (int i = 0; i < currentCourse.students.size(); i++){
-		String studentEmail = currentCourse.students.get(i).getGuardianEmail();
-		System.out.println(studentEmail);
-	}*/
 	
-	
->>>>>>> branch 'master' of https://github.com/anguyen8613/AttendanceProject.git
 
 	public static void main(String[] args) {
 

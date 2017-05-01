@@ -46,11 +46,8 @@ public class AddStudentViewController {
 			alert.show();
 			clearText();
 		}
-		main.showHomeScene();
-<<<<<<< HEAD
-=======
+		//main.showHomeScene();
 
->>>>>>> branch 'master' of https://github.com/anguyen8613/AttendanceProject.git
 	}
 	
 	public void clearText(){

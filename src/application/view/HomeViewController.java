@@ -33,11 +33,7 @@ public class HomeViewController {
 		main.showSearchView();
 	}
 	
-	@FXML
-	private void emailBT() throws IOException {
-		main.messaging();
-	}
-	
+
 	
 	@FXML
 	private void addStudentBt() throws IOException {
@@ -54,12 +50,6 @@ public class HomeViewController {
 		main.takeAttendance(main.currentCourse);
 
 	}
-	
-	@FXML
-	private void homeSearchBt() throws IOException {
-		main.showSearchView();
-	}
-	
 
 	@FXML
 	public void initialize() {
@@ -103,8 +93,6 @@ public class HomeViewController {
 		studentTable.setItems(data);
 
 	}
-	
-	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
