@@ -29,6 +29,17 @@ public class HomeViewController {
 	private Main main;
 	
 	@FXML
+	private void homeSearchBt() throws IOException {
+		main.showSearchView();
+	}
+	
+	@FXML
+	private void emailBT() throws IOException {
+		main.messaging();
+	}
+	
+	
+	@FXML
 	private void addStudentBt() throws IOException {
 	main.showAddStudentStage();
 	}
