@@ -40,9 +40,15 @@ public class HomeViewController {
 
 	@FXML
 	private void takeAttendanceScreen() throws IOException {
-		main.showAttendanceStage();
+		main.takeAttendance(main.currentCourse);
 
 	}
+	
+	@FXML
+	private void homeSearchBt() throws IOException {
+		main.showSearchView();
+	}
+	
 
 	@FXML
 	public void initialize() {
@@ -86,6 +92,8 @@ public class HomeViewController {
 		studentTable.setItems(data);
 
 	}
+	
+	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML

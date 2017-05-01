@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import application.Main;
 import application.classes.Administrator;
@@ -26,22 +27,22 @@ public class TakeAttendanceViewController {
 	private static Main main;
 	
 	@FXML
-	private TextField scanTf;
+	public TextField scanTf;
 	
 	@FXML
-	private Label mode;
+	public Label mode;
 	
 	@FXML 
-	private Label firstName;
+	public Label firstName;
 	
 	@FXML
-	private Label lastName;
+	public Label lastName;
 	
 	@FXML
-	private Label id;
+	public Label id;
 	
 	@FXML
-	private Label status;
+	public Label status;
 	
 	
 	
@@ -57,11 +58,29 @@ public class TakeAttendanceViewController {
 	}
 	
 	@FXML void takeAttendanceBt() throws InterruptedException{
-		takeAttendance(main.currentCourse);
+		main.takeAttendance(main.currentCourse);
 	}
 	
-	
 	@FXML
+	public void takeAttendance(Course currentCourse) {
+		StringProperty modeSp = new SimpleStringProperty("");
+		StringProperty firstNameSp = new SimpleStringProperty("");
+		StringProperty lastNameSp = new SimpleStringProperty("");
+		StringProperty idSp = new SimpleStringProperty("");
+		StringProperty statusSp = new SimpleStringProperty("");	mode.textProperty().bind(modeSp);
+		firstName.textProperty().bind(firstNameSp);
+		lastName.textProperty().bind(lastNameSp);
+		id.textProperty().bind(idSp);
+		status.textProperty().bind(statusSp);
+		
+		Main.parse(currentCourse);
+		int currentStudentId = 1;
+		
+		
+		
+	}
+	
+	/* @FXML
 	public void takeAttendance(Course currentCourse) throws InterruptedException {
 		StringProperty modeSp = new SimpleStringProperty("");
 		StringProperty firstNameSp = new SimpleStringProperty("");
@@ -75,6 +94,8 @@ public class TakeAttendanceViewController {
 		id.textProperty().bind(idSp);
 		status.textProperty().bind(statusSp);
 		
+		boolean empty = true;
+		
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Date date = new Date();
 		dateFormat.format(date);
@@ -87,8 +108,11 @@ public class TakeAttendanceViewController {
 		
 	
 		do {
+			
 			modeSp.setValue("System in Login Mode");
-			 currentStudentId = parse(currentCourse);
+		
+					currentStudentId = parse(currentCourse);
+				
 			if (currentStudentId == 304999154) {
 				break;
 			}
@@ -113,25 +137,44 @@ public class TakeAttendanceViewController {
 			
 			
 			scanTf.clear();
+			scanTf.wait();
+			System.out.println(scanTf.getText().isEmpty());
 			
 			
 
 		} while (currentStudentId != 304999154);
+		scanTf.clear();
+		
+		System.out.println(scanTf.getText().isEmpty());
 
-		System.out.println("System in Standby Mode");
+		System.out.println("System in Standby Mode1");
 		currentStudentId = 1;
 		do {
-			currentStudentId = parse(currentCourse);
+			System.out.println("standbymode2");
+			modeSp.setValue("System in Standby Mode2");
+			
+					currentStudentId = parse(currentCourse);
+				
+			
 			if (currentStudentId == 304999154) {
 				break;
 			}
-			modeSp.setValue("System in Standby Mode");
+			scanTf.clear();
+			scanTf.wait();
+			
 
 		} while (currentStudentId != 304999154);
-		
+		scanTf.clear();
+		scanTf.wait();
+		System.out.println("out of standbymode2");
 		currentStudentId = 1;
 		do {
-			 currentStudentId = parse(currentCourse);
+			System.out.println("log out mode");
+	
+			
+					currentStudentId = parse(currentCourse);
+				
+			
 			if (currentStudentId == 304999154) {
 				break;
 			}
@@ -149,12 +192,15 @@ public class TakeAttendanceViewController {
 			idSp.setValue(Integer.toString(currentStudent.getId()));
 			statusSp.setValue("You are logged out");
 			currentStudent.setLogoutTime(logoutTime);
+			scanTf.clear();
+			scanTf.wait();
 			
 
 		} while (currentStudentId != 304999154);
 
 		currentCourse.attendanceRecords.add(currentAttendanceRecord);
-		main.writeToFile(main.file);
+		
+	//	main.writeToFile(main.file);
 
 	}
 	
@@ -198,5 +244,5 @@ public class TakeAttendanceViewController {
 		return id;
 
 	}
-
+ */
 }

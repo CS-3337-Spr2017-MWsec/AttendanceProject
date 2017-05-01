@@ -49,7 +49,7 @@
    <left>
       <VBox prefHeight="150.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Search" />
+            <Button mnemonicParsing="false" onAction="#homeSearchBt" prefHeight="25.0" prefWidth="121.0" text="Search" />
             <Button mnemonicParsing="false" onAction="#editBt" prefHeight="25.0" prefWidth="121.0" text="Edit" />
             <Button mnemonicParsing="false" onAction="#addStudentBt" prefHeight="25.0" prefWidth="121.0" text="Add Student" />
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Remove Student" />

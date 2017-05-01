@@ -20,7 +20,10 @@ import application.classes.Administrator;
 import application.classes.AttendanceRecord;
 import application.classes.Course;
 import application.classes.Student;
+import application.view.TakeAttendanceViewController;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -32,7 +35,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+	
 	private static Stage primaryStage; 
 	private static BorderPane mainLayout;
 	public static File file = null;
@@ -128,7 +131,21 @@ public class Main extends Application {
 
 
 	}
-	
+	public static void showSearchView() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("view/searchView.fxml"));
+		BorderPane s = loader.load();
+		Stage stage = new Stage();
+
+		stage.setTitle("Search");
+		stage.initModality(Modality.WINDOW_MODAL);
+		stage.initOwner(primaryStage);
+
+		Scene scene = new Scene(s);
+		stage.setScene(scene);
+		stage.showAndWait();
+		////
+	}
 	
 
 	// Java Code
@@ -278,6 +295,7 @@ public class Main extends Application {
 					e.printStackTrace();
 				}
 			}
+			
 
 		}
 
@@ -299,9 +317,16 @@ public class Main extends Application {
 		AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
 		
 		currentAttendanceRecord.students = currentCourse.students;
-
+		
+		StringProperty modeSp = new SimpleStringProperty("");
+		StringProperty firstNameSp = new SimpleStringProperty("");
+		StringProperty lastNameSp = new SimpleStringProperty("");
+		StringProperty idSp = new SimpleStringProperty("");
+		StringProperty statusSp = new SimpleStringProperty("");	
+		
+		
 		int currentStudentId = 1;
-		System.out.println("System in Login Mode");
+
 		do {
 			 currentStudentId = parse(currentCourse);
 			if (currentStudentId == 304999154) {
@@ -489,6 +514,8 @@ public class Main extends Application {
 		}
 		return -1;
 	}
+	
+	
 
 	public static void edit(Course currentCourse, int id,Date d,String action) {
 		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
@@ -538,6 +565,8 @@ public class Main extends Application {
 			}
 		}
 	}
+	
+	
 
 	public static void main(String[] args) {
 
