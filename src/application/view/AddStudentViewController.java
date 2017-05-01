@@ -46,7 +46,7 @@ public class AddStudentViewController {
 			alert.show();
 			clearText();
 		}
-		main.showHomeScene();
+		//main.showHomeScene();
 
 	}
 	
