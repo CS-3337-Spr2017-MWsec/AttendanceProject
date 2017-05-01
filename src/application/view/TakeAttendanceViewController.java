@@ -21,6 +21,8 @@ import javafx.scene.control.TextField;
 
 public class TakeAttendanceViewController {
 	
+	static StringProperty statusSp = new SimpleStringProperty("");
+	
 	private static Main main;
 	
 	@FXML
@@ -41,6 +43,8 @@ public class TakeAttendanceViewController {
 	@FXML
 	private Label status;
 	
+	
+	
 	@FXML
 	public void initialize() {
 		
@@ -52,35 +56,25 @@ public class TakeAttendanceViewController {
 		
 	}
 	
-	@FXML void takeAttendanceBt(){
+	@FXML void takeAttendanceBt() throws InterruptedException{
 		takeAttendance(main.currentCourse);
 	}
 	
-	StringProperty modeSp = new SimpleStringProperty("");
-	StringProperty firstNameSp = new SimpleStringProperty("");
-	StringProperty lastNameSp = new SimpleStringProperty("");
-	StringProperty idSp = new SimpleStringProperty("");
-	static StringProperty statusSp = new SimpleStringProperty("");
-	
 	
 	@FXML
-	public void takeAttendance(Course currentCourse) {
-		
-		
+	public void takeAttendance(Course currentCourse) throws InterruptedException {
 		StringProperty modeSp = new SimpleStringProperty("");
 		StringProperty firstNameSp = new SimpleStringProperty("");
 		StringProperty lastNameSp = new SimpleStringProperty("");
 		StringProperty idSp = new SimpleStringProperty("");
 		StringProperty statusSp = new SimpleStringProperty("");
 		
-		
-		
 		mode.textProperty().bind(modeSp);
 		firstName.textProperty().bind(firstNameSp);
 		lastName.textProperty().bind(lastNameSp);
 		id.textProperty().bind(idSp);
 		status.textProperty().bind(statusSp);
-
+		
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Date date = new Date();
 		dateFormat.format(date);
@@ -100,19 +94,22 @@ public class TakeAttendanceViewController {
 			System.out.println(currentStudentId);
 			Student currentStudent = null;
 			Timestamp loginTime = new Timestamp(System.currentTimeMillis());
+			System.out.print("array size" + currentAttendanceRecord.students.size());
 			for(int i = 0; i < currentAttendanceRecord.students.size(); i++) {
 				if(currentAttendanceRecord.students.get(i).getId() == currentStudentId) {
 					currentStudent = currentAttendanceRecord.students.get(i);
 				}
-				firstNameSp.setValue(currentStudent.getFirstName());
-				lastNameSp.setValue(currentStudent.getLastName());
-				idSp.setValue(Integer.toString(currentStudent.getId()));
-				statusSp.setValue("You are logged in");
 			}
+			System.out.println(currentStudent.getFirstName());
 			
-			
+			firstNameSp.setValue(currentStudent.getFirstName());
+			lastNameSp.setValue(currentStudent.getLastName());
+			idSp.setValue(Integer.toString(currentStudent.getId()));
+			statusSp.setValue("Logged In");
 			currentStudent.setLoginTime(loginTime);
-			
+			System.out.println(currentStudent.getLoginTime());
+			scanTf.clear();
+			scanTf.wait();
 
 		} while (currentStudentId != 304999154);
 
@@ -169,7 +166,6 @@ public class TakeAttendanceViewController {
 			if (student.length() < 95) {
 				statusSp.setValue("Scan Failed");
 			}
-
 		} while (student.length() < 95);
 
 		String firstName;
