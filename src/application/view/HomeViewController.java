@@ -12,9 +12,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
@@ -27,19 +29,25 @@ public class HomeViewController {
 	private TableView attendanceTable;
 
 	private Main main;
-	
+
 	@FXML
 	private void homeSearchBt() throws IOException {
 		main.showSearchView();
 	}
-	
 
-	
 	@FXML
-	private void addStudentBt() throws IOException {
-	main.showAddStudentStage();
+	private void emailBT() throws IOException {
+		main.messaging();
+		Alert alert = new Alert(AlertType.INFORMATION, "Email(s) have been sent");
+		alert.show();
 	}
 	
+
+	@FXML
+	private void addStudentBt() throws IOException {
+		main.showAddStudentStage();
+	}
+
 	@FXML
 	private void editBt() throws IOException {
 		main.showEditStudentStage();
@@ -97,6 +105,7 @@ public class HomeViewController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	public void setAttendanceTable() {
+
 		if (main.currentCourse.attendanceRecords.size() > 0) {
 			List<String> columns = new ArrayList<String>();
 			for (int i = 0; i < main.currentCourse.getAttendanceRecords().size(); i++) {
@@ -104,7 +113,7 @@ public class HomeViewController {
 			}
 			TableColumn[] tableColumns = new TableColumn[columns.size()];
 			int columnIndex = 0;
-			for (int i = 0; i < columns.size(); i++) {
+			for (int i = 0; i < main.currentCourse.getAttendanceRecords().size(); i++) {
 				final int j = i;
 				TableColumn col = new TableColumn(columns.get(i));
 				col.setCellValueFactory(
@@ -122,7 +131,7 @@ public class HomeViewController {
 					x = main.currentCourse.getAttendanceRecords().get(j).getStudents().get(i).getStatus();
 
 					row.add(x);
-				
+
 				}
 				attendanceTable.getItems().add(row);
 			}

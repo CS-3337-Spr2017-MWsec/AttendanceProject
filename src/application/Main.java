@@ -12,7 +12,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 import java.util.Scanner;
+
+import javax.mail.Session;
+import javax.mail.Message;
+import javax.mail.Transport;
+import javax.mail.Authenticator;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.PasswordAuthentication;
+import javax.mail.internet.MimeMessage;
 
 import javax.swing.JFileChooser;
 
@@ -33,7 +43,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	private static Stage primaryStage; 
+	private static Stage primaryStage;
 	private static BorderPane mainLayout;
 	public static File file = null;
 	public static Course currentCourse = new Course();
@@ -62,27 +72,26 @@ public class Main extends Application {
 		BorderPane courses = loader.load();
 		mainLayout.setCenter(courses);
 	}
-	
+
 	public static void showAddCourseStage() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/AddCourseView.fxml"));
 		BorderPane addNewCourseBp = loader.load();
-		Stage addDialogStage =  new Stage();
+		Stage addDialogStage = new Stage();
 		addDialogStage.setTitle("Add New Course");
 		addDialogStage.initModality(Modality.WINDOW_MODAL);
 		addDialogStage.initOwner(primaryStage);
 		Scene scene = new Scene(addNewCourseBp);
 		addDialogStage.setScene(scene);
 		addDialogStage.showAndWait();
-		
-		
+
 	}
-	
+
 	public static void showEditStudentStage() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/EditView.fxml"));
 		BorderPane editStudentBp = loader.load();
-		Stage addDialogStage =  new Stage();
+		Stage addDialogStage = new Stage();
 		addDialogStage.setTitle("Edit Student");
 		addDialogStage.initModality(Modality.WINDOW_MODAL);
 		addDialogStage.initOwner(primaryStage);
@@ -90,34 +99,33 @@ public class Main extends Application {
 		addDialogStage.setScene(scene);
 		addDialogStage.showAndWait();
 	}
-	
+
 	public static void showAttendanceStage() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/TakeAttendanceView.fxml"));
 		BorderPane showAttendanceBp = loader.load();
-		Stage addDialogStage =  new Stage();
+		Stage addDialogStage = new Stage();
 		addDialogStage.setTitle("Attendance Roll Call");
 		addDialogStage.initModality(Modality.WINDOW_MODAL);
 		addDialogStage.initOwner(primaryStage);
 		Scene scene = new Scene(showAttendanceBp);
 		addDialogStage.setScene(scene);
 		addDialogStage.showAndWait();
-	
+
 	}
-	
+
 	public static void showAddStudentStage() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/AddStudentView.fxml"));
 		BorderPane addNewStudentBp = loader.load();
-		Stage addDialogStage =  new Stage();
+		Stage addDialogStage = new Stage();
 		addDialogStage.setTitle("Add New Student");
 		addDialogStage.initModality(Modality.WINDOW_MODAL);
 		addDialogStage.initOwner(primaryStage);
 		Scene scene = new Scene(addNewStudentBp);
 		addDialogStage.setScene(scene);
 		addDialogStage.showAndWait();
-		
-		
+
 	}
 
 	public static void showHomeScene() throws IOException {
@@ -126,11 +134,9 @@ public class Main extends Application {
 		BorderPane home = loader.load();
 		mainLayout.setCenter(home);
 
-
 	}
-	
-	
-		public static void showSearchView() throws IOException {
+
+	public static void showSearchView() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("view/searchView.fxml"));
 		BorderPane s = loader.load();
@@ -145,10 +151,9 @@ public class Main extends Application {
 		stage.showAndWait();
 		////
 	}
-	
 
 	// Java Code
-	public static void createCourse(String name,  String number, String days, String time) {
+	public static void createCourse(String name, String number, String days, String time) {
 
 		// Choose a correctly formatted CSV file to upload
 
@@ -184,7 +189,6 @@ public class Main extends Application {
 		 * scanner.nextLine(); System.out.println("Enter course time: "); String
 		 * time = scanner.nextLine();
 		 */
-		
 
 		// Crate a Course from above information
 		Course currentCourse = new Course(name, number, days, time);
@@ -270,26 +274,21 @@ public class Main extends Application {
 						String[] timeStamps = studentInfo[i].split("/");
 
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-						System.out.println(timeStamps[0]);
-						if(timeStamps[0].length() > 10) {
+						if (timeStamps[0].length() > 10) {
 							Date dateLogin = sdf.parse(timeStamps[0]);
 							Timestamp Login = new Timestamp(dateLogin.getTime());
 							currentStudent.setLoginTime(Login);
 						}
-						if(timeStamps[1].length() > 10) {
+						if (timeStamps[1].length() > 10) {
 							Date dateLogout = sdf.parse(timeStamps[1]);
 							Timestamp Logout = new Timestamp(dateLogout.getTime());
 							currentStudent.setLogoutTime(Logout);
 						}
 						currentStudent.setStatus();
 						currentAttendanceRecord.students.add(currentStudent);
-						
-						
 
 					}
-					System.out.println(currentCourse.getCourseName());
-					System.out.println(currentCourse.getAttendanceRecords().get(0).getStudents().get(1).getLoginTime());
-					System.out.println(currentCourse.getAttendanceRecords().get(0).getDate());
+
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -304,35 +303,34 @@ public class Main extends Application {
 			currentCourse.students.add(newStudent);
 		}
 		showHomeScene();
-		
 
 	}
 
 	public static void takeAttendance(Course currentCourse) {
+		System.out.println(currentCourse.getAttendanceRecords().size());
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Date date = new Date();
 		dateFormat.format(date);
 		AttendanceRecord currentAttendanceRecord = new AttendanceRecord(date);
-		
+
 		currentAttendanceRecord.students = currentCourse.students;
 
 		int currentStudentId = 1;
 		System.out.println("System in Login Mode");
 		do {
-			 currentStudentId = parse(currentCourse);
+			currentStudentId = parse(currentCourse);
 			if (currentStudentId == 304999154) {
 				break;
 			}
-			
+
 			Student currentStudent = null;
 			Timestamp loginTime = new Timestamp(System.currentTimeMillis());
-			for(int i = 0; i < currentAttendanceRecord.students.size(); i++) {
-				if(currentAttendanceRecord.students.get(i).getId() == currentStudentId) {
+			for (int i = 0; i < currentAttendanceRecord.students.size(); i++) {
+				if (currentAttendanceRecord.students.get(i).getId() == currentStudentId) {
 					currentStudent = currentAttendanceRecord.students.get(i);
 				}
 			}
 			currentStudent.setLoginTime(loginTime);
-			
 
 		} while (currentStudentId != 304999154);
 
@@ -349,24 +347,23 @@ public class Main extends Application {
 		System.out.println("System in Logout Mode");
 		currentStudentId = 1;
 		do {
-			 currentStudentId = parse(currentCourse);
+			currentStudentId = parse(currentCourse);
 			if (currentStudentId == 304999154) {
 				break;
 			}
-			
+
 			Student currentStudent = null;
 			Timestamp logoutTime = new Timestamp(System.currentTimeMillis());
-			for(int i = 0; i < currentAttendanceRecord.students.size(); i++) {
-				if(currentAttendanceRecord.students.get(i).getId() == currentStudentId) {
+			for (int i = 0; i < currentAttendanceRecord.students.size(); i++) {
+				if (currentAttendanceRecord.students.get(i).getId() == currentStudentId) {
 					currentStudent = currentAttendanceRecord.students.get(i);
 				}
 			}
 			currentStudent.setLogoutTime(logoutTime);
-			
 
+			currentStudent.setStatus();
 		} while (currentStudentId != 304999154);
-
-		currentCourse.attendanceRecords.add(currentAttendanceRecord);
+		Main.currentCourse.attendanceRecords.add(currentAttendanceRecord);
 		writeToFile(file);
 
 	}
@@ -424,39 +421,36 @@ public class Main extends Application {
 		try {
 			fw = new FileWriter(selectedFile);
 			bw = new BufferedWriter(fw);
-		
+
 			String courseInfo = currentCourse.getCourseName() + "," + currentCourse.getCourseNumber() + ","
 					+ currentCourse.getDays() + "," + currentCourse.getTime();
-			
+
 			System.out.println(currentCourse.getAttendanceRecords().size());
 			for (int i = 0; i < currentCourse.getAttendanceRecords().size(); i++) {
 				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 				String date = df.format(currentCourse.getAttendanceRecords().get(i).getDate());
-				courseInfo += ","+ date;
-				
+				courseInfo += "," + date;
+
 			}
-			
-			
+
 			bw.write(courseInfo);
 			bw.newLine();
 
-			
 			for (int i = 0; i < currentCourse.students.size(); i++) {
 				String studentInfo = "";
 				int studentId = currentCourse.students.get(i).getId();
 				studentInfo += currentCourse.students.get(i).getFirstName() + ","
 						+ currentCourse.students.get(i).getLastName() + "," + studentId + ","
 						+ currentCourse.students.get(i).getGuardianEmail() + ",";
-				
-				for(int j = 0 ; j < currentCourse.attendanceRecords.size(); j++) {
-					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(i).getLoginTime() +"/" + currentCourse.attendanceRecords.get(j).getStudents().get(i).getLogoutTime() + ",";
+
+				for (int j = 0; j < currentCourse.attendanceRecords.size(); j++) {
+					studentInfo += currentCourse.attendanceRecords.get(j).getStudents().get(i).getLoginTime() + "/"
+							+ currentCourse.attendanceRecords.get(j).getStudents().get(i).getLogoutTime() + ",";
 				}
 				bw.write(studentInfo);
 				bw.newLine();
 			}
-			
-			
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -488,18 +482,17 @@ public class Main extends Application {
 
 	public static int search(int id, Course currentCourse) {
 		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
-		AttendanceRecord last = temp.get(temp.size()-1);
+		AttendanceRecord last = temp.get(temp.size() - 1);
 		ArrayList<Student> studentlist = last.getStudents();
-		for(Student a: studentlist) {
+		for (Student a : studentlist) {
 
-			if(a.getId()==id) {
-				System.out.println("Name: "+ a.getFirstName() + " " + a.getLastName());
-				if(a.getLoginTime()!=null && a.getLogoutTime()!=null) {
+			if (a.getId() == id) {
+				System.out.println("Name: " + a.getFirstName() + " " + a.getLastName());
+				if (a.getLoginTime() != null && a.getLogoutTime() != null) {
 					System.out.println("Status: Present on " + last.getDate());
 					System.out.println("Log in time: " + a.getLoginTime());
-					System.out.println("Log out time: " +a.getLogoutTime());
-				}
-				else
+					System.out.println("Log out time: " + a.getLogoutTime());
+				} else
 					System.out.println("Status: Absent on " + last.getDate());
 				return 1;
 			}
@@ -508,57 +501,109 @@ public class Main extends Application {
 		return -1;
 	}
 
-	public static void edit(Course currentCourse, int id,Date d,String action) {
+	public static void edit(Course currentCourse, int id, Date d, String action) {
 		ArrayList<AttendanceRecord> temp = currentCourse.getAttendanceRecords();
-		
-		for(AttendanceRecord a:temp) 
-			if(a.getDate().equals(d)) {
+
+		for (AttendanceRecord a : temp)
+			if (a.getDate().equals(d)) {
 				ArrayList<Student> slist = a.getStudents();
-				for(Student b:slist) 
-					if(b.getId()==id){
+				for (Student b : slist)
+					if (b.getId() == id) {
 						System.out.println("Before edit");
-						System.out.println("Login time:"+b.getLoginTime()+ ". Logout time:"+b.getLogoutTime());
-						takeAction(b,d,action);
+						System.out.println("Login time:" + b.getLoginTime() + ". Logout time:" + b.getLogoutTime());
+						takeAction(b, d, action);
 						System.out.println("After edit");
-						System.out.println("Login time:"+b.getLoginTime()+ ". Logout time:"+b.getLogoutTime());
+						System.out.println("Login time:" + b.getLoginTime() + ". Logout time:" + b.getLogoutTime());
 					}
-			}		
+			}
 	}
-	
-	private static void takeAction(Student s,Date d,String action){
-		switch(action){
-			case "Mark Present":{
-				Timestamp login = new Timestamp(System.currentTimeMillis());
-				Timestamp logout = new Timestamp(System.currentTimeMillis());
-				s.setLoginTime(login);
-				s.setLogoutTime(logout);
-				s.setStatus();
-				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked present on "+d.toString());
-				alert.show();
-				break;
-			}
-			case "Mark Absent":{
-				s.setLoginTime(null);
-				s.setLogoutTime(null);
-				s.setStatus();
-				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked absent on "+d.toString());
-				alert.show();
-				break;
-			}
-			case "Mark Tardy":{
-				Timestamp logout = new Timestamp(System.currentTimeMillis());
-				s.setLogoutTime(logout);
-				s.setLoginTime(null);
-				s.setStatus();
-				Alert alert = new Alert(AlertType.INFORMATION, s.getFirstName()+" "+s.getLastName()+" successfully marked tardy on "+d.toString());
-				alert.show();
-				break;
-			}
+
+	private static void takeAction(Student s, Date d, String action) {
+		switch (action) {
+		case "Mark Present": {
+			Timestamp login = new Timestamp(System.currentTimeMillis());
+			Timestamp logout = new Timestamp(System.currentTimeMillis());
+			s.setLoginTime(login);
+			s.setLogoutTime(logout);
+			s.setStatus();
+			Alert alert = new Alert(AlertType.INFORMATION,
+					s.getFirstName() + " " + s.getLastName() + " successfully marked present on " + d.toString());
+			alert.show();
+			break;
+		}
+		case "Mark Absent": {
+			s.setLoginTime(null);
+			s.setLogoutTime(null);
+			s.setStatus();
+			Alert alert = new Alert(AlertType.INFORMATION,
+					s.getFirstName() + " " + s.getLastName() + " successfully marked absent on " + d.toString());
+			alert.show();
+			break;
+		}
+		case "Mark Tardy": {
+			Timestamp logout = new Timestamp(System.currentTimeMillis());
+			s.setLogoutTime(logout);
+			s.setLoginTime(null);
+			s.setStatus();
+			Alert alert = new Alert(AlertType.INFORMATION,
+					s.getFirstName() + " " + s.getLastName() + " successfully marked tardy on " + d.toString());
+			alert.show();
+			break;
+		}
 		}
 	}
-	
-	
-	
+
+	public static void messaging() {
+		System.out.println("message running");
+		String adminEmail = "moloch714@gmail.com";
+		String adminPassword = "Barce@714";
+
+		String subject = "Attendance Alert";
+
+		Properties props = new Properties();
+
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+
+		Session session = Session.getDefaultInstance(props, new Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(adminEmail, adminPassword);
+			}
+		});
+
+		for (int i = 0; i < currentCourse.students.size(); i++) {
+			AttendanceRecord temp = currentCourse.attendanceRecords.get(currentCourse.attendanceRecords.size()-1);
+			if (temp.getStudents().get(i).getStatus() == "absent"){
+			String firstName = currentCourse.students.get(i).getFirstName();
+			String lastName = currentCourse.students.get(i).getLastName();
+			String guardianEmail = currentCourse.students.get(i).getGuardianEmail();
+			String message = firstName + " " + lastName + " missed class today.";
+
+			try {
+				Message msg = new MimeMessage(session); // create message object
+				System.out.println("try running");
+				msg.setFrom(new InternetAddress(adminEmail)); // send from
+				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(guardianEmail)); // send
+																									// to
+				msg.setSubject(subject); // send default subject
+				msg.setText(message); // send body message
+
+				Transport.send(msg); // send message object
+
+				
+			} catch (MessagingException e) {
+				System.out.println("alert: error");
+
+				throw new RuntimeException(e);
+			}
+		}
+		}
+	} // end of for loop
+
+	// end of messaging()
 
 	public static void main(String[] args) {
 
